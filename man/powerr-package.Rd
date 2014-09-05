@@ -14,7 +14,7 @@ More about what it does (maybe more than one line)
 \tabular{ll}{
 Package: \tab powerr\cr
 Type: \tab Package\cr
-Version: \tab 1.0\cr
+Version: \tab 0.1-0\cr
 Date: \tab 2014-09-04\cr
 License: \tab What license is it under?\cr
 }

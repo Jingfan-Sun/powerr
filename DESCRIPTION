@@ -1,9 +1,15 @@
 Package: powerr
 Type: Package
-Title: What the package does (short line)
-Version: 1.0
+Title: Analysis of Power System
+Version: 0.1-0
 Date: 2014-09-04
-Author: Who wrote it
-Maintainer: Who to complain to <yourfault@somewhere.net>
-Description: More about what it does (maybe more than one line)
-License: What license is it under?
+Authors@R: c(person("Jingfan", "Sun", role=c("aut", "cre"),
+    email="sunjfsjfan@gmail.com"))
+Author: Jingfan Sun [aut, cre]
+Maintainer: Jingfan Sun <sunjfsjfan@gmail.com>
+Depends:
+    R (>= 3.1.0),
+    methods
+Description: PowerR is used for electric power system analysis and control,
+    including power flow analysis.
+License: GPL (>= 2)
