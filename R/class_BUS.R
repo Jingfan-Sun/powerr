@@ -2,6 +2,7 @@
 #'
 #' @field n total number of buses
 #' @field index bus indexes
+#' @field int internal nus number
 #' @field Pg active power injected in the network by generators
 #' @field Qg reactive power injected in the network by generators
 #' @field Pl active power absorbed from the network by loads
@@ -11,6 +12,7 @@
 BUS <- setRefClass("BUS", contains = "powerr", 
                    fields = list(n = "numeric",
                                  index = "numeric",
+                                 int = "numeric",
                                  a = "numeric",
                                  v = "numeric",
                                  Pg = "numeric",
@@ -19,11 +21,12 @@ BUS <- setRefClass("BUS", contains = "powerr",
                                  Ql = "numeric",
                                  names = "character"),
                    methods = list(
-                       initialize = function(data, n, index, a, v, Pg, Qg, Pl, Ql, names, ncol){
+                       initialize = function(data, n, index, int, a, v, Pg, Qg, Pl, Ql, names, ncol){
                            n <<- numeric();
                            a <<- numeric();
                            v <<- numeric();
                            index <<- numeric();
+                           int <<- numeric();
                            Pg <<- numeric();
                            Qg <<- numeric();
                            Pl <<- numeric();
@@ -39,6 +42,9 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            n <<- nrow(data);
                            a <<- 1:n;
                            v <<- a + n;
+                           
+                           # setup internal bus number for second indexing of bus
+                           int[data[, 1]] <<- a;
                            
                            DAE$m <- 2 * n;
                            DAE$y <- rep(0, DAE$m);
@@ -77,6 +83,19 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            
                            return(DAE)
                            
+                       },
+                       getbus = function(idx){
+                           uTemp <- int[round(idx)];
+                           vTemp <- uTemp + n;
+                           return(list(uTemp, vTemp));
+                       },
+                       getzeros = function(){
+                           uTemp <- rep(0, n);
+                           return(uTemp);
+                       },
+                       getint = function(idx){
+                           uTemp <- int[round(idx)];
+                           return(uTemp);
                        },
                        test = function(DAE){
                            n <<- nrow(data);

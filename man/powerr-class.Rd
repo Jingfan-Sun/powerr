@@ -12,6 +12,10 @@ The top class powerr
 \describe{
 \item{\code{data}}{powerr data}
 
+\item{\code{store}}{store temp for data}
+
 \item{\code{ncol}}{number of the column of the data input}
+
+\item{\code{u}}{connection status}
 }}
 

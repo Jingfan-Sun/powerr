@@ -7,14 +7,34 @@
 
 SHUNT <- setRefClass("SHUNT", contains = "powerr", 
                   fields = list(bus = "numeric",
+                                vbus = "numeric",
+                                n = "numeric",
                                 g = "numeric",
                                 b = "numeric"),
                   methods = list(
-                      initialize = function(data, bus, g, b){
+                      initialize = function(data, bus, vbus, n, g, b){
                           bus <<- numeric();
+                          vbus <<- numeric();
+                          n <<- 0;
                           g <<- numeric();
                           b <<- numeric();
                           ncol <<- 7;
+                      },
+                      setup = function(Bus){
+                          
+                          if (length(data) == 0) return();
+                          
+                          n <<- nrow(data);
+                          bus <<- Bus$getbus(data[, 1])[[1]];
+                          vbus <<- Bus$getbus(data[, 1])[[2]];
+                          
+                          if (length(data[1, ]) < ncol){
+                              u <<- rep(1, n);
+                          }else {
+                              u <<- data(, ncol);
+                          }
+                          
+                          store <<- data;
                       }
                       
                   ))

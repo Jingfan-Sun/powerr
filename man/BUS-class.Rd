@@ -14,6 +14,8 @@ The class BUS
 
 \item{\code{index}}{bus indexes}
 
+\item{\code{int}}{internal nus number}
+
 \item{\code{Pg}}{active power injected in the network by generators}
 
 \item{\code{Qg}}{reactive power injected in the network by generators}
