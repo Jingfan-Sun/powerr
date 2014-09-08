@@ -1,15 +1,13 @@
 #' The class SUPPLY 
 #'
-#' @field data supply data
 #' @field n total number of supply
 
-SUPPLY <- setRefClass("SUPPLY", 
-                      fields = list(data = "matrix",
-                                    n = "numeric"),
+SUPPLY <- setRefClass("SUPPLY", contains = "powerr", 
+                      fields = list(n = "numeric"),
                       methods = list(
                           initialize = function(data, n){
-                              data <<- matrix();
-                              n <<- numeric()
+                              n <<- numeric();
+                              ncol <<- 20;
                           }
                           
                       ))

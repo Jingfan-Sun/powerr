@@ -10,8 +10,6 @@ The class SG
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{slack generators data}
-
 \item{\code{n}}{total number of slack generators}
 
 \item{\code{bus}}{indexes of buses to which slack generators are connected}

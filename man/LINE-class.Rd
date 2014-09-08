@@ -10,8 +10,6 @@ The class LINE
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{transmission line data}
-
 \item{\code{n}}{total number of lines}
 
 \item{\code{Y}}{admittance matrix of the network}

@@ -10,8 +10,6 @@ The class DEMAND
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{demand load data}
-
 \item{\code{n}}{total number of demand loads}
 }}
 

@@ -10,8 +10,6 @@ The class BUS
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{bus data}
-
 \item{\code{n}}{total number of buses}
 
 \item{\code{index}}{bus indexes}

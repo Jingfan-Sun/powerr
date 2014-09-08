@@ -10,8 +10,6 @@ The class SUPPLY
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{supply data}
-
 \item{\code{n}}{total number of supply}
 }}
 

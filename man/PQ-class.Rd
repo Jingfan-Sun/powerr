@@ -10,8 +10,6 @@ The class PQ
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{PQ generator data}
-
 \item{\code{n}}{total number of PQ generators}
 
 \item{\code{bus}}{numbers of buses to which PQ generators are connected}

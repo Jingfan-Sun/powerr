@@ -1,0 +1,6 @@
+#' setup components
+#' 
+
+powerComponentsSetup <- function(){
+    
+}

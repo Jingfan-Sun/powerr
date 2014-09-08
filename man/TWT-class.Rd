@@ -7,9 +7,4 @@
 \description{
 The class TWT
 }
-\section{Fields}{
-
-\describe{
-\item{\code{data}}{three winding transformer data}
-}}
 

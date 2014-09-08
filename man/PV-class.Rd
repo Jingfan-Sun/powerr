@@ -10,8 +10,6 @@ The class PV
 \section{Fields}{
 
 \describe{
-\item{\code{data}}{PV generator data}
-
 \item{\code{n}}{total number of PV generators}
 
 \item{\code{bus}}{numbers of buses to which PV generators are connected}
