@@ -3,18 +3,16 @@
 \alias{powerDenseMatrix}
 \title{create dense matrix with row and column index}
 \usage{
-powerDenseMatrix(rowIndex, columnIndex, data, nrow, ncol)
+powerDenseMatrix(rowIndex, columnIndex, x, dims)
 }
 \arguments{
 \item{rowIndex}{specify the location of row of non-zero entries in the matrix}
 
 \item{columnIndex}{specify the location of column of non-zero entries in the matrix}
 
-\item{data}{non-zero entries on these certain locations}
+\item{x}{non-zero entries on these certain locations}
 
-\item{nrow}{number of row of the matrix}
-
-\item{ncol}{number of column of the matrix}
+\item{dims}{dimention of the matrix}
 }
 \description{
 create dense matrix with row and column index

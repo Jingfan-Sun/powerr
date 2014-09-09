@@ -49,7 +49,8 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            DAE$m <- 2 * n;
                            DAE$y <- rep(0, DAE$m);
                            DAE$g <- rep(0, DAE$m);
-                           DAE$Gy <- Matrix(0, nrow = DAE$m, ncol = DAE$m, sparse = TRUE);
+#                            DAE$Gy <- Matrix(0, nrow = DAE$m, ncol = DAE$m, sparse = TRUE);
+                           DAE$Gy <- matrix(0, nrow = DAE$m, ncol = DAE$m);
                            
                            if (ncol(data) >= 4){
                                

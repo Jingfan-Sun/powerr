@@ -83,10 +83,16 @@ LINE <- setRefClass("LINE", contains = "powerr",
 #                                     sparseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
 #                                     sparseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
+                                Y <<- powerDenseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
+                                    powerDenseMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
+                                    powerDenseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
+                                    powerDenseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
+                                
                                 # check for missing connections (0 diagonal elements)
                                 b <- which(diag(Y) == 0);
                                 if (length(b) != 0) {
 #                                     Y <<- Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
+                                    Y <<- Y - powerDenseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
                                 }
                             }
                         }
