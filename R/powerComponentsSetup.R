@@ -11,5 +11,4 @@ powerComponentsSetup <- function(){
     PQgen$setup(Bus);
     PQgen <- PQgen$addgen(PQload, PQgen, Bus);
     Supply <- Supply$setup(Bus);
-    
 }

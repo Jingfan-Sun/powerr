@@ -10,14 +10,14 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     powerComponentsSetup();
     
     # Build Admittance Matrix in Line
-    powerBuildAdmittance();
+    Line$buildAdmittance(Bus);
     
     # memory allocation for equations and Jacobians
-    DAE$f = 0;
-    DAE$x = 0;
-    DAE$Fx = 1;
-    DAE$Fy = Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
-    DAE$Gx = Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
+    DAE$f <- 0;
+    DAE$x <- 0;
+    DAE$Fx <- 1;
+    DAE$Fy <- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
+    DAE$Gx <- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
     
     convergence <- 1;
     iteration <- 0;

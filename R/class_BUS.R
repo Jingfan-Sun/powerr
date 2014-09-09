@@ -98,10 +98,9 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            return(uTemp);
                        },
                        test = function(DAE){
-#                            n <<- nrow(data);
-#                            a <<- 1:n;
-#                            DAE$m <- 2 * n;
-#                            return(DAE)
+                           ncol <<- 5;
+                           print(ncol);
+                           return(DAE)
                            
                        }
                        
