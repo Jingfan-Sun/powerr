@@ -29,7 +29,7 @@ SG <- setRefClass("SG", contains = "powerr",
                            ncol <<- 13;
                        },
                        setup = function(Bus, PV, DAE){
-                           if (length(data) == 0) return();
+                           if (length(data) == 0) return(DAE);
                            
                            n <<- length(data[, 1]);
                            bus <<- Bus$getbus(data[, 1])[[1]];

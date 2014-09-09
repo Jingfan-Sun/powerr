@@ -25,7 +25,7 @@ PV <- setRefClass("PV", contains = "powerr",
                            ncol <<- 11;
                        },
                        setup = function(Bus, DAE){
-                           if (length(data) == 0) return();
+                           if (length(data) == 0) return(DAE);
                            
                            bus <<- Bus$getint(data[, 1]);
                            k <- unique(bus);

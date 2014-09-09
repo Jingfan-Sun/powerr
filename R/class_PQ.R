@@ -30,55 +30,59 @@ PQ <- setRefClass("PQ", contains = "powerr",
                           ncol <<- 9;
                       },
                       setup = function(Bus){
-                          if (length(data) == 0) stop();
-                          
-                          bus <<- Bus$getint(data[, 1]);
-                          k <- unique(bus);
-                          h <- powerUnique(bus);
-                          
-                          if (length(k) > length(h)){
-                              warning('More than one PV generator connected o the same bus.');
-                              # ...
-                          }
-                          
-                          vbus <<- bus + Bus$n;
-                          n <<- length(data[, 1]);
-                          gen <<- rep(0, n);
-                          shunt <<- rep(0, n);
-                          
-                          if (length(data[1, ]) == 7){
-                              data <<- cBind(data, matrix(0, nrow = n, ncol = 1), matrix(1, nrow = n, ncol = 1));
-                          } else if (length(data[1, ]) == 8){
-                              data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
+                          if (length(data) == 0) {
+                              # do nothing ...
+                              temp <- 1;
                           } else {
-                              stop('PQ data format is not consistent');
+                              bus <<- Bus$getint(data[, 1]);
+                              k <- unique(bus);
+                              h <- powerUnique(bus);
+                              
+                              if (length(k) > length(h)){
+                                  warning('More than one PV generator connected o the same bus.');
+                                  # ...
+                              }
+                              
+                              vbus <<- bus + Bus$n;
+                              n <<- length(data[, 1]);
+                              gen <<- rep(0, n);
+                              shunt <<- rep(0, n);
+                              
+                              if (length(data[1, ]) == 7){
+                                  data <<- cBind(data, matrix(0, nrow = n, ncol = 1), matrix(1, nrow = n, ncol = 1));
+                              } else if (length(data[1, ]) == 8){
+                                  data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
+                              } else {
+                                  stop('PQ data format is not consistent');
+                              }
+                              
+                              if (length(data[1, ]) < ncol){
+                                  u <<- rep(1, n);
+                              }else {
+                                  u <<- data[, ncol];
+                              }
+                              
+                              idx <- powerFind(data[, 6] <= 0, 0);
+                              if (length(idx) != 0) data[ide, 6] <<- 1.2;
+                              idx <- powerFind(data[, 7] <= 0, 0);
+                              if (length(idx) != 0) data[ide, 7] <<- 0.8;
+                              
+                              P0 <<- u * data[, 4];
+                              Q0 <<- u * data[, 5];
+                              vmax <<- rep(1, n);
+                              vmin <<- rep(1, n);
+                              store <<- data;
                           }
-                          
-                          if (length(data[1, ]) < ncol){
-                              u <<- rep(1, n);
-                          }else {
-                              u <<- data[, ncol];
-                          }
-                          
-                          idx <- powerFind(data[, 6] <= 0, 0);
-                          if (length(idx) != 0) data[ide, 6] <<- 1.2;
-                          idx <- powerFind(data[, 7] <= 0, 0);
-                          if (length(idx) != 0) data[ide, 7] <<- 0.8;
-                          
-                          P0 <<- u * data[, 4];
-                          Q0 <<- u * data[, 5];
-                          vmax <<- rep(1, n);
-                          vmin <<- rep(1, n);
-                          store <<- data;
                       }, 
                       addgen = function(a, b, Bus) {
-                          if (length(b$n) == 0) return(list(a, b));
-                          
-                          # set generated power as negtive loads
-                          
-                          
-                          return(list(a, b));
-                          
+                          # defalut PQgen call this method, so parameters can be changed use '<<-'
+                          # Thus, the return variable is PQload which should be returned to change
+                          if (length(b$n) == 0) {return(b);}
+                          else {
+                              # set generated power as negtive loads
+                              
+                              return(b);
+                          }
                       }
                       
                   ))
