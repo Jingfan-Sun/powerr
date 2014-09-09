@@ -78,15 +78,15 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 ts <- data[, 11] * exp(1i * data[, 12] * pi / 180);
                                 ts2 <- ts * Conj(ts);
                                 
-                                Y <<- sparseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
-                                    sparseMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
-                                    sparseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
-                                    sparseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
+#                                 Y <<- sparseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
+#                                     sparseMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
+#                                     sparseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
+#                                     sparseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
                                 # check for missing connections (0 diagonal elements)
                                 b <- which(diag(Y) == 0);
                                 if (length(b) != 0) {
-                                    Y <<- Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
+#                                     Y <<- Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
                                 }
                             }
                         }
