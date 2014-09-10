@@ -58,6 +58,25 @@ PV <- setRefClass("PV", contains = "powerr",
                            store <<- data;
                            
                            return(DAE);
+                       },
+                       gcall = function(Bus, DAE) {
+                           if (length(n) == 0){
+                               # do nothing
+                               return(DAE);
+                           } else {
+                               K <- u * (1 + DAE$kg * data[, 10]);
+                               DAE$g[bus] <- DAE$g[bus] - K * data[, 4];
+                               
+                               if (Settings$pv2pq == FALSE) {
+                                   DAE$g[vbus[which(u != 0)]] <- 0;
+                               }
+                               
+                               return(DAE)
+                           }
+                       },
+                       test = function() {
+#                            DAE$x <<- 10;
+#                            Bus$u <<- 100;
                        }
                        
                    ))

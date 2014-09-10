@@ -83,6 +83,38 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               
                               return(b);
                           }
+                      },
+                      gcall = function(DAE) {
+                          if (length(n) == 0){
+                              # do nothing
+                              return(DAE);
+                          } else {
+                              DAE$g[bus] <- u * data[, 4] + DAE$g[bus];
+                              DAE$g[vbus] <- u * data[, 5] + DAE$g[vbus];
+                              
+                              a <- which((DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
+                              b <- which(DAE$y[vbus] > data[, 6] & data[, 8] & u);
+                              
+                              if (length(a) != 0) {
+                                  k <- bus[a];
+                                  h <- vbus[a];
+                                  DAE$g[k] <- data[a, 4] * DAE$y[h] * DAE$y[h] / data[a, 7] / data[a, 7] +
+                                      DAE$g[k] - data[a, 4];
+                                  DAE$g[h] <- data[a, 5] * DAE$y[h] * DAE$y[h] / data[a, 7] / data[a, 7] +
+                                      DAE$g[h] - data[a, 5];
+                              }
+                              
+                              if (length(b) != 0) {
+                                  k <- bus[b];
+                                  h <- vbus[b];
+                                  DAE$g[k] <- data[b, 4] * DAE$y[h] * DAE$y[h] / data[b, 7] / data[b, 7] +
+                                      DAE$g[k] - data[b, 4];
+                                  DAE$g[h] <- data[b, 5] * DAE$y[h] * DAE$y[h] / data[b, 7] / data[b, 7] +
+                                      DAE$g[h] - data[b, 5];
+                              }
+                              
+                              return(DAE);
+                          }
                       }
                       
                   ))

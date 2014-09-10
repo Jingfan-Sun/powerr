@@ -5,6 +5,9 @@
 
 powerInit <- function(){
     
+    # globle settings
+    Settings <<- list(pv2pq = FALSE)
+    
     # Differential Algebraic Equations
     DAE <<- list(x = numeric(), 
                  y = numeric(), 

@@ -51,6 +51,9 @@ calcInc <- function(){
     DAE$g = rep(0, DAE$m);
     
     # single slack bus
-    
+    DAE <- Line$gcall(Bus, DAE)
+    DAE <- PQload$gcall(DAE)
+    DAE <- Shunt$gcall(DAE)
+    DAE <- PVgen$gcall(Bus, DAE)
     
 }
