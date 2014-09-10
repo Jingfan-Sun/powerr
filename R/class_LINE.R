@@ -62,8 +62,27 @@ LINE <- setRefClass("LINE", contains = "powerr",
                             
                             store <<- data;
                         },
-                        gcall = function(){
-                            DAE$x
+                        gcall = function(Bus, DAE){
+                            if (length(n) == 0){
+                                # do nothing
+                                return(DAE);
+                            } else {
+                                DAE$g <- rep(0, DAE$m);
+                                
+                                na <- Bus$a;
+                                nv <- Bus$v;
+                                
+                                DAE$y[nv] <- apply(cbind(DAE$y[nv], rep(1e-6, length(nv))), 1, max);
+                                Vc <- DAE$y[nv] * exp(1i * DAE$y[na]);
+                                S <- Vc * Conj(Y %*% Vc);
+                                p <<- as.numeric(Re(S));
+                                q <<- as.numeric(Im(S));
+                                
+                                DAE$g[na] <- p;
+                                DAE$g[nv] <- q;
+                                
+                                return(DAE);
+                            }
                         },
                         # build admittance matrix
                         buildAdmittance = function(Bus){

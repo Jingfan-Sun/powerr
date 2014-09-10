@@ -48,7 +48,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
 
 calcInc <- function(){
     
-    DAE$g = rep(0, DAE.m);
+    DAE$g = rep(0, DAE$m);
     
     # single slack bus
     
