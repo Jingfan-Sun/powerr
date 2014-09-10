@@ -18,7 +18,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     DAE$Fx <- 1;
 #     DAE$Fy <- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
 #     DAE$Gx <- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
-    DAE$Fy <- matrix(0, nrow = 1, ncol = DAE$m);
+    DAE$Fy <- matrix(0, nrow = 1, ncol = DAE$m)
     DAE$Gx <- matrix(0, nrow = DAE$m, ncol = 1);
     
     convergence <- 1;
