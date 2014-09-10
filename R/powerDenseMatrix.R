@@ -8,11 +8,17 @@
 powerDenseMatrix <- function(rowIndex, columnIndex, x, dims){
     nrow <- dims[1]
     ncol <- dims[2]
-    temp <- matrix(0, nrow, ncol);
-    index <- apply(cbind(rowIndex, columnIndex), 1, foo <- function(x) {
-        x[1] + (x[2] - 1) * nrow
+    temp <<- matrix(0, nrow, ncol);
+    
+    index <- apply(cbind(rowIndex, columnIndex), 1, foo <- function(y) {
+        y[1] + (y[2] - 1) * nrow
     })
-    temp[index] <- x;
+    
+    apply(cbind(index, as.numeric(1:length(x))), 1, foo <- function(y) {
+        temp[y[1]] <<- temp[y[1]] + x[y[2]];
+        return(temp)
+    })
+#     temp[index] <- x;
     
     return(temp)
 }

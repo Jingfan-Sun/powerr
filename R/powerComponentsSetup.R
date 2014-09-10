@@ -1,7 +1,7 @@
 #' setup components
 #' 
 
-powerComponentsSetup <- function(){
+powerComponentsSetup <- function(DAE){
     DAE <- Bus$setup(DAE);
     Line$setup(Bus);
     Shunt$setup(Bus);
@@ -11,4 +11,6 @@ powerComponentsSetup <- function(){
     PQgen$setup(Bus);
     PQgen <- PQgen$addgen(PQload, PQgen, Bus);
     Supply <- Supply$setup(Bus);
+    
+    return(DAE)
 }

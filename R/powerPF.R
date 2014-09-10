@@ -5,19 +5,20 @@
 #' @param iterLimit set maximum iteration for each run 
 
 powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
-        
+    
     # Setup components
-    powerComponentsSetup();
+    DAE <- powerComponentsSetup(DAE);
     
     # Build Admittance Matrix in Line
     Line$buildAdmittance(Bus);
     
     # memory allocation for equations and Jacobians
+    # no dynamic components
     DAE$f <- 0;
     DAE$x <- 0;
     DAE$Fx <- 1;
-#     DAE$Fy <- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
-#     DAE$Gx <- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
+    #     DAE$Fy <- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
+    #     DAE$Gx <- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
     DAE$Fy <- matrix(0, nrow = 1, ncol = DAE$m);
     DAE$Gx <- matrix(0, nrow = DAE$m, ncol = 1);
     
@@ -38,7 +39,8 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
         }
     }
     
-    proc.time() - timeStart;
+    # print elapsed time in unit second
+    print(as.list(proc.time() - timeStart)$elapsed);
 }
 
 #' calculate the increase of each iteration in each run
@@ -46,7 +48,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
 
 calcInc <- function(){
     
-    DAE.g = rep(0, DAE.m);
+    DAE$g = rep(0, DAE.m);
     
     # single slack bus
     
