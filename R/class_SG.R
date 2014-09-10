@@ -74,6 +74,20 @@ SG <- setRefClass("SG", contains = "powerr",
                            store <<- data;
                            
                            return(DAE);
+                       },
+                       gcall = function(Bus, PVgen, DAE) {
+                           if (length(n) == 0){
+                               # do nothing
+                               return(DAE);
+                           } else {
+                               idx <- which(u != 0);
+                               DAE$g[bus[idx]] <- 0;
+                               if (Settings$pv2pq == FALSE) {
+                                   DAE$g[vbus[idx]] <- 0;
+                               }
+                               
+                               return(DAE);
+                           }
                        }
                        
                    ))
