@@ -50,6 +50,19 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                                      
                                  return(DAE)
                              }
+                         },
+                         Gycall = function(DAE) {
+                             if (length(n) == 0){
+                                 # do nothing
+                                 return(DAE);
+                             } else {
+                                 V <- 2 * u * DAE$y[vbus];
+                                 
+                                 DAE$Gy <- DAE$Gy + 
+                                     powerDenseMatrix(bus, vbus, data[, 5] * V, c(DAE$m, DAE$m)) - 
+                                     powerDenseMatrix(vbus, vbus, data[, 6] * V, c(DAE$m, DAE$m));
+                                 return(DAE);
+                             }
                          }
                          
                      ))

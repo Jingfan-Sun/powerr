@@ -74,9 +74,33 @@ PV <- setRefClass("PV", contains = "powerr",
                                return(DAE)
                            }
                        },
-                       test = function() {
-#                            DAE$x <<- 10;
-#                            Bus$u <<- 100;
+                       Gycall = function(DAE) {
+                           if (length(n) == 0){
+                               # do nothing
+                               return(DAE);
+                           } else {
+                               if (Settings$pv2pq == TRUE) {
+                                   DAE <- setgy(idx = vbus[which((!pq & u) != 0)], DAE = DAE);
+                               } else {
+                                   DAE <- setgy(idx = vbus[which(u != 0)], DAE = DAE);
+                               }
+                               return(DAE);
+                           }
+                       },
+                       Fxcall = function(DAE) {
+                           if (length(n) == 0){
+                               # do nothing
+                           } else {
+                               idx <- vbus[which(u != 0)];
+                               
+                               if (length(idx) == 0) {
+                                   # do nothing
+                               } else {
+                                   DAE$Fy[, idx] <- 0;
+                                   DAE$Gx[idx, ] <- 0;
+                               }
+                           }
+                           return(DAE);
                        }
                        
                    ))

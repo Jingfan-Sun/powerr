@@ -115,6 +115,39 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               
                               return(DAE);
                           }
+                      },
+                      Gycall = function(DAE) {
+                          if (length(n) == 0){
+                              # do nothing
+                              return(DAE);
+                          } else {
+                              a <- which((DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
+                              b <- which(DAE$y[vbus] > data[, 6] & data[, 8] & u);
+                              
+                              if (length(a) != 0) {
+                                  k <- bus[a];
+                                  h <- vbus[a];
+                                  DAE$Gy <- DAE$Gy + 
+                                      powerDenseMatrix(h, k, 2 * data[, 4] * DAE$y[k] / data[, 7] / 
+                                                           data[, 7], c(DAE$m, DAE$m));
+                                  DAE$Gy <- DAE$Gy + 
+                                      powerDenseMatrix(k, k, 2 * data[, 5] * DAE$y[k] / data[, 7] / 
+                                                           data[, 7], c(DAE$m, DAE$m));
+                              }
+                              
+                              if (length(b) != 0) {
+                                  k <- bus[b];
+                                  h <- vbus[b];
+                                  DAE$Gy <- DAE$Gy + 
+                                      powerDenseMatrix(h, k, 2 * data[, 4] * DAE$y[k] / data[, 6] / 
+                                                           data[, 6], c(DAE$m, DAE$m));
+                                  DAE$Gy <- DAE$Gy + 
+                                      powerDenseMatrix(k, k, 2 * data[, 5] * DAE$y[k] / data[, 6] / 
+                                                           data[, 6], c(DAE$m, DAE$m));
+                              }
+                              
+                              return(DAE);
+                          }
                       }
                       
                   ))

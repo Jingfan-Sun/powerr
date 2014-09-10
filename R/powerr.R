@@ -6,7 +6,8 @@
 powerInit <- function(){
     
     # globle settings
-    Settings <<- list(pv2pq = FALSE)
+    Settings <<- list(pv2pq = FALSE,
+                      show = TRUE)
     
     # Differential Algebraic Equations
     DAE <<- list(x = numeric(), 
@@ -50,6 +51,28 @@ powerData <- function(data=NULL){
     
     # read data
     source(paste(path.package('powerr'), '/extdata/', data, sep = ''))
+}
+
+#' setgy
+#' 
+
+setgy <- function(idx, type = 1, DAE) {
+    if (length(idx) == 0) {
+        return(DAE);
+    } else {
+        if (type == 1) {
+            DAE$Gy[idx, ] <- 0;
+            DAE$Gy[, idx] <- 0;
+            DAE$Gy <- DAE$Gy + powerDenseMatrix(idx, idx, 1, c(DAE$m, DAE$m));
+        } else {
+            DAE$Gy[idx, ] <- 0;
+            DAE$Gy[, idx] <- 0;
+            DAE$Gy <- DAE$Gy + powerDenseMatrix(idx, idx, 1, c(DAE$m, DAE$m));
+            DAE$Fy[, idx] <- 0;
+            DAE$Gx[idx, ] <- 0;
+        }
+        return(DAE);
+    }
 }
 
 
