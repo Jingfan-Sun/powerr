@@ -3,7 +3,10 @@
 \alias{powerComponentsSetup}
 \title{setup components}
 \usage{
-powerComponentsSetup()
+powerComponentsSetup(DAE)
+}
+\arguments{
+\item{DAE}{}
 }
 \description{
 setup components

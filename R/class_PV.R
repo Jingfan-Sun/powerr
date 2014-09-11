@@ -24,45 +24,46 @@ PV <- setRefClass("PV", contains = "powerr",
                            qg <<- numeric();
                            ncol <<- 11;
                        },
-                       setup = function(Bus, DAE){
-                           if (length(data) == 0) return(DAE);
-                           
-                           bus <<- Bus$getint(data[, 1]);
-                           k <- unique(bus);
-                           h <- powerUnique(bus);
-                           
-                           if (length(k) > length(h)){
-                               warning('More than one PV generator connected o the same bus.');
-                               # ...
+                       setup = function(){
+                           if (length(data) == 0) {
+                               # do nothing
+                           } else {
+                               bus <<- Bus$getint(data[, 1]);
+                               k <- unique(bus);
+                               h <- powerUnique(bus);
+                               
+                               if (length(k) > length(h)){
+                                   warning('More than one PV generator connected o the same bus.');
+                                   # ...
+                               }
+                               vbus <<- bus + Bus$n;
+                               n <<- length(data[, 1]);
+                               DAE$y[vbus] <- data[, 5];
+                               
+                               if (length(data[1, ]) == 9){
+                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 2));
+                               } else if (length(data[1, ]) == 10){
+                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
+                               }
+                               
+                               if (length(data[1, ]) < ncol){
+                                   u <<- rep(1, n);
+                               }else {
+                                   u <<- data[, ncol];
+                               }
+                               
+                               qmax <<- rep(1, n);
+                               qmin <<- rep(1, n);
+                               pq <<- rep(0, n);
+                               qg <<- rep(0, n);
+                               store <<- data;
                            }
-                           vbus <<- bus + Bus$n;
-                           n <<- length(data[, 1]);
-                           DAE$y[vbus] <- data[, 5];
                            
-                           if (length(data[1, ]) == 9){
-                               data <<- cBind(data, matrix(1, nrow = n, ncol = 2));
-                           } else if (length(data[1, ]) == 10){
-                               data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
-                           }
-                           
-                           if (length(data[1, ]) < ncol){
-                               u <<- rep(1, n);
-                           }else {
-                               u <<- data[, ncol];
-                           }
-                           
-                           qmax <<- rep(1, n);
-                           qmin <<- rep(1, n);
-                           pq <<- rep(0, n);
-                           qg <<- rep(0, n);
-                           store <<- data;
-                           
-                           return(DAE);
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       gcall = function(Bus, DAE) {
+                       gcall = function() {
                            if (length(n) == 0){
                                # do nothing
-                               return(DAE);
                            } else {
                                K <- u * (1 + DAE$kg * data[, 10]);
                                DAE$g[bus] <- DAE$g[bus] - K * data[, 4];
@@ -70,24 +71,23 @@ PV <- setRefClass("PV", contains = "powerr",
                                if (Settings$pv2pq == FALSE) {
                                    DAE$g[vbus[which(u != 0)]] <- 0;
                                }
-                               
-                               return(DAE)
                            }
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       Gycall = function(DAE) {
+                       Gycall = function() {
                            if (length(n) == 0){
                                # do nothing
-                               return(DAE);
                            } else {
+                               assign("DAE", DAE, envir = .GlobalEnv);
                                if (Settings$pv2pq == TRUE) {
-                                   DAE <- setgy(idx = vbus[which((!pq & u) != 0)], DAE = DAE);
+                                   setgy(idx = vbus[which((!pq & u) != 0)]);
                                } else {
-                                   DAE <- setgy(idx = vbus[which(u != 0)], DAE = DAE);
+                                   setgy(idx = vbus[which(u != 0)]);
                                }
-                               return(DAE);
                            }
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       Fxcall = function(DAE) {
+                       Fxcall = function() {
                            if (length(n) == 0){
                                # do nothing
                            } else {
@@ -100,7 +100,7 @@ PV <- setRefClass("PV", contains = "powerr",
                                    DAE$Gx[idx, ] <- 0;
                                }
                            }
-                           return(DAE);
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        }
                        
                    ))

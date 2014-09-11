@@ -3,7 +3,7 @@
 \alias{calcInc}
 \title{calculate the increase of each iteration in each run}
 \usage{
-calcInc()
+calcInc(nodyn, DAE)
 }
 \description{
 calculate the increase of each iteration in each run

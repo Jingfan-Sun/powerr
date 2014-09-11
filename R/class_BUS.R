@@ -34,8 +34,7 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            names <<- character();
                            ncol <<- 6;
                        },
-                       setup = function(DAE){
-                           
+                       setup = function(){
                            if (nrow(data) == 0 && ncol(data) == 0){
                                print('The data file does not seem to be in a valid format: no bus found$')
                            }
@@ -49,7 +48,7 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            DAE$m <- 2 * n;
                            DAE$y <- rep(0, DAE$m);
                            DAE$g <- rep(0, DAE$m);
-#                            DAE$Gy <- Matrix(0, nrow = DAE$m, ncol = DAE$m, sparse = TRUE);
+                           #                            DAE$Gy <- Matrix(0, nrow = DAE$m, ncol = DAE$m, sparse = TRUE);
                            DAE$Gy <- matrix(0, nrow = DAE$m, ncol = DAE$m);
                            
                            if (ncol(data) >= 4){
@@ -82,7 +81,7 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            Pg <<- rep(0, n);
                            Qg <<- rep(0, n);
                            
-                           return(DAE)
+                           DAE <- assign("DAE", DAE, envir = .GlobalEnv);
                            
                        },
                        getbus = function(idx){
@@ -98,11 +97,15 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            uTemp <- int[round(idx)];
                            return(uTemp);
                        },
-                       test = function(DAE){
-                           ncol <<- 5;
-                           print(ncol);
-                           return(DAE)
-                           
+                       test = function(){
+                           print(environment())
+                           print(parent.env(environment()))
+                           print(parent.env(parent.env(environment())))
+                           print(parent.env(parent.env(parent.env(environment()))))
+                           print(parent.env(parent.env(parent.env(parent.env(environment())))))
+                           DAE$m <- 1000;
+                           DAE$n <- DAE$m;
+                           print(DAE$n)
                        }
                        
                    ))

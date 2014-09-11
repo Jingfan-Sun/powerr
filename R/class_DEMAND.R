@@ -13,7 +13,7 @@ DEMAND <- setRefClass("DEMAND", contains = "powerr",
                            vbus <<- numeric();
                            ncol <<- 18;
                        },
-                       setup = function(Bus) {
+                       setup = function() {
                            if (length(data) == 0) {
                                # do nothing
                                temp <- 1;

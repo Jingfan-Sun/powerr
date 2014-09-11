@@ -11,7 +11,7 @@ SUPPLY <- setRefClass("SUPPLY", contains = "powerr",
                               bus <<- numeric();
                               ncol <<- 20;
                           },
-                          setup = function(Bus){
+                          setup = function(){
                               if (length(data) == 0) {
                                   # do nothing
                                   temp <- 1;

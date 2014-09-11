@@ -4,25 +4,25 @@
 #' @param tolerance set minimum accuracy for the power flow run
 #' @param iterLimit set maximum iteration for each run 
 
-powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20, DAE = DAE){
+powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     
     # Setup components
-    DAE <- powerComponentsSetup(DAE);
+    powerComponentsSetup();
     
     # Build Admittance Matrix in Line
-    Line$buildAdmittance(Bus);
+    Line$buildAdmittance();
     
     # memory allocation for equations and Jacobians
     # no dynamic components
-    nodyn = TRUE;
-    DAE$n <- 1;
-    DAE$f <- 0;
-    DAE$x <- 0;
-    DAE$Fx <- 1;
-    #     DAE$Fy <- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
-    #     DAE$Gx <- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
-    DAE$Fy <- matrix(0, nrow = 1, ncol = DAE$m);
-    DAE$Gx <- matrix(0, nrow = DAE$m, ncol = 1);
+    nodyn <- TRUE;
+    DAE$n <<- 1;
+    DAE$f <<- 0;
+    DAE$x <<- 0;
+    DAE$Fx <<- 1;
+    #     DAE$Fy <<- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
+    #     DAE$Gx <<- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
+    DAE$Fy <<- matrix(0, nrow = 1, ncol = DAE$m);
+    DAE$Gx <<- matrix(0, nrow = DAE$m, ncol = 1);
     
     convergence <- 1;
     iteration <- 0;
@@ -34,15 +34,18 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20, DAE = D
     # start timer
     timeStart <- proc.time();
     
+    if (method == 'newton') {
+        cat('Power Flow Solver: Newton–Raphson method \n');
+    }
+    
     while ((err_max > tolerance) & (iteration <= iterLimit) & (alfa > 1e-5)){
         if (method == 'newton'){
-            cat('Power Flow Solver: Newton–Raphson method');
             
-            inc <- calcInc(nodyn, DAE)[[1]];
-            DAE <- calcInc(nodyn, DAE)[[2]];
+            assign("DAE", DAE, envir = .GlobalEnv);
+            inc <- calcInc(nodyn);
             
-            DAE$x <- DAE$x + inc[1: DAE$n];
-            DAE$y <- DAE$t + inc[(1 + DAE$n): (DAE$m + DAE$n)];
+            DAE$x <<- DAE$x + inc[1: DAE$n];
+            DAE$y <<- DAE$y + inc[(1 + DAE$n): (DAE$m + DAE$n)];
         }
         
         iteration <- iteration + 1;
@@ -63,49 +66,48 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20, DAE = D
         }
     }
     
-    if (iteration > iter_max) {
+    if (iteration > iterLimit) {
         cat('Reach maximum number of iteration without convergence.', '\n');
         convergence <- 0;
     }
     
     # print elapsed time in unit second
-    cat(as.list(proc.time() - timeStart)$elapsed);
+    cat('Time elapsed:', as.list(proc.time() - timeStart)$elapsed, 's');
     
-    return(DAE);
 }
 
 #' calculate the increase of each iteration in each run
 #' 
 
-calcInc <- function(nodyn, DAE){
+calcInc <- function(nodyn){
     
-    DAE$g = rep(0, DAE$m);
+    DAE$g <<- rep(0, DAE$m);
     
     # single slack bus
-    DAE <- Line$gcall(Bus, DAE);
-    DAE <- PQload$gcall(DAE);
-    DAE <- Shunt$gcall(DAE);
-    DAE <- PVgen$gcall(Bus, DAE);
-    DAE <- Slack$gcall(Bus, PVgen, DAE);
-    DAE <- Line$Gycall(Bus, DAE);
-    DAE <- PQload$Gycall(DAE);
-    DAE <- Shunt$Gycall(DAE);
-    DAE <- PVgen$Gycall(DAE);
-    DAE <- Slack$Gycall(DAE);
+    Line$gcall();
+    PQload$gcall();
+    Shunt$gcall();
+    PVgen$gcall();
+    Slack$gcall();
+    Line$Gycall();
+    PQload$Gycall();
+    Shunt$Gycall();
+    PVgen$Gycall();
+    Slack$Gycall();
     
-    DAE$Fx <- matrix(0, DAE$n, DAE$n);
-    DAE$Fy <- matrix(0, DAE$n, DAE$m);
-    DAE$Gx <- matrix(0, DAE$m, DAE$n);
+    DAE$Fx <<- matrix(0, DAE$n, DAE$n);
+    DAE$Fy <<- matrix(0, DAE$n, DAE$m);
+    DAE$Gx <<- matrix(0, DAE$m, DAE$n);
     
     if (nodyn == TRUE) {
-        DAE$Fx <- 1;
+        DAE$Fx <<- 1;
     }
     
-    DAE <- Slack$Fxcall(DAE, type = 'full');
-    DAE <- PVgen$Fxcall(DAE);
+    Slack$Fxcall(type = 'full');
+    PVgen$Fxcall();
     
     inc <- solve(-rbind(cbind(DAE$Fx, DAE$Fy), cbind(DAE$Gx, DAE$Gy)),
                  rbind(DAE$f, DAE$g));
     
-    return(list(inc, DAE));
+    return(inc);
 }

@@ -28,83 +28,82 @@ SG <- setRefClass("SG", contains = "powerr",
                            dq <<- numeric();
                            ncol <<- 13;
                        },
-                       setup = function(Bus, PV, DAE){
-                           if (length(data) == 0) return(DAE);
-                           
-                           n <<- length(data[, 1]);
-                           bus <<- Bus$getbus(data[, 1])[[1]];
-                           vbus <<- Bus$getbus(data[, 1])[[2]];
-                           
-                           b <- unique(bus);
-                           if (n > length(b)) {
-                               stop('More than one slack generator connected to the same bus.');
-                           }
-                           
-                           if (length(data[1, ]) == 9){
-                               data <<- cBind(data, matrix(0, nrow = n, ncol = 1), matrix(1, nrow = n, ncol = 3));
-                           } else if (length(data[1, ]) == 10){
-                               data <<- cBind(data, matrix(1, nrow = n, ncol = 3));
-                           } else if (length(data[1, ]) == 11){
-                               data <<- cBind(data, matrix(1, nrow = n, ncol = 2));
-                           } else if (length(data[1, ]) == 12){
-                               data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
-                           }
-                           
-                           z <- data[, 12];
-                           u <<- data[, ncol];
-                           
-                           # at least one angle must be reference
-                           # at least one bus must be the slack
-                           
-                           DAE$y[vbus] <- data[, 4];
-                           if (!sum(DAE$y[Bus$a]) & n == 1) {
-                               DAE$y[Bus$a] <- data[1, 5];
+                       setup = function(){
+                           if (length(data) == 0) {
+                               # do nothing
                            } else {
-                               DAE$y[bus] <- data[, 5];
+                               n <<- length(data[, 1]);
+                               bus <<- Bus$getbus(data[, 1])[[1]];
+                               vbus <<- Bus$getbus(data[, 1])[[2]];
+                               
+                               b <- unique(bus);
+                               if (n > length(b)) {
+                                   stop('More than one slack generator connected to the same bus.');
+                               }
+                               
+                               if (length(data[1, ]) == 9){
+                                   data <<- cBind(data, matrix(0, nrow = n, ncol = 1), matrix(1, nrow = n, ncol = 3));
+                               } else if (length(data[1, ]) == 10){
+                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 3));
+                               } else if (length(data[1, ]) == 11){
+                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 2));
+                               } else if (length(data[1, ]) == 12){
+                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
+                               }
+                               
+                               z <- data[, 12];
+                               u <<- data[, ncol];
+                               
+                               # at least one angle must be reference
+                               # at least one bus must be the slack
+                               
+                               DAE$y[vbus] <- data[, 4];
+                               if (!sum(DAE$y[Bus$a]) & n == 1) {
+                                   DAE$y[Bus$a] <- data[1, 5];
+                               } else {
+                                   DAE$y[bus] <- data[, 5];
+                               }
+                               
+                               # checking the consistency of distributed slack bus
+                               
+                               refbus <<- bus[powerFind((z & u), 0)];
+                               pg <<- data[, 10];
+                               dq <<- rep(0, n);
+                               qg <<- rep(0, n);
+                               qmax <<- rep(1, n);
+                               qmin <<- rep(1, n);
+                               store <<- data;
                            }
-                           
-                           # checking the consistency of distributed slack bus
-                           
-                           refbus <<- bus[powerFind((z & u), 0)];
-                           pg <<- data[, 10];
-                           dq <<- rep(0, n);
-                           qg <<- rep(0, n);
-                           qmax <<- rep(1, n);
-                           qmin <<- rep(1, n);
-                           store <<- data;
-                           
-                           return(DAE);
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       gcall = function(Bus, PVgen, DAE) {
+                       gcall = function() {
                            if (length(n) == 0){
                                # do nothing
-                               return(DAE);
                            } else {
                                idx <- which(u != 0);
                                DAE$g[bus[idx]] <- 0;
                                if (Settings$pv2pq == FALSE) {
                                    DAE$g[vbus[idx]] <- 0;
                                }
-                               
-                               return(DAE);
                            }
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       Gycall = function(DAE) {
+                       Gycall = function() {
                            if (length(n) == 0){
                                # do nothing
-                               return(DAE);
                            } else {
-                               DAE <- setgy(idx = bus[which(u != 0)], DAE = DAE);
+                               assign("DAE", DAE, envir = .GlobalEnv);
+                               setgy(idx = bus[which(u != 0)]);
                                
                                if (Settings$pv2pq == TRUE) {
-                                   DAE <- setgy(idx = vbus[which((!pq & u) != 0)], DAE = DAE);
+                                   setgy(idx = vbus[which((!pq & u) != 0)]);
                                } else {
-                                   DAE <- setgy(idx = vbus[which(u != 0)], DAE = DAE);
+                                   setgy(idx = vbus[which(u != 0)]);
                                }
-                               return(DAE);
                            }
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        },
-                       Fxcall = function(DAE, type = 'all') {
+                       Fxcall = function(type = 'all') {
                            if (length(n) == 0){
                                # do nothing
                            } else {
@@ -125,7 +124,7 @@ SG <- setRefClass("SG", contains = "powerr",
                                    DAE$Gx[idx, ] <- 0;
                                }
                            }
-                           return(DAE);
+                           assign("DAE", DAE, envir = .GlobalEnv);
                        }
                        
                    ))

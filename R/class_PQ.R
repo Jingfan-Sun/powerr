@@ -29,7 +29,7 @@ PQ <- setRefClass("PQ", contains = "powerr",
                           gen <<- numeric();
                           ncol <<- 9;
                       },
-                      setup = function(Bus){
+                      setup = function(){
                           if (length(data) == 0) {
                               # do nothing ...
                               temp <- 1;
@@ -74,20 +74,20 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               store <<- data;
                           }
                       }, 
-                      addgen = function(a, b, Bus) {
+                      addgen = function() {
                           # defalut PQgen call this method, so parameters can be changed use '<<-'
                           # Thus, the return variable is PQload which should be returned to change
-                          if (length(b$n) == 0) {return(b);}
+                          if (length(PQgen$n) == 0) {
+                              # do nothing
+                          }
                           else {
                               # set generated power as negtive loads
-                              
-                              return(b);
                           }
+                          assign('PQgen', PQgen, env = .GlobalEnv);
                       },
-                      gcall = function(DAE) {
+                      gcall = function() {
                           if (length(n) == 0){
                               # do nothing
-                              return(DAE);
                           } else {
                               DAE$g[bus] <- u * data[, 4] + DAE$g[bus];
                               DAE$g[vbus] <- u * data[, 5] + DAE$g[vbus];
@@ -112,14 +112,12 @@ PQ <- setRefClass("PQ", contains = "powerr",
                                   DAE$g[h] <- data[b, 5] * DAE$y[h] * DAE$y[h] / data[b, 7] / data[b, 7] +
                                       DAE$g[h] - data[b, 5];
                               }
-                              
-                              return(DAE);
                           }
+                          assign("DAE", DAE, envir = .GlobalEnv);
                       },
-                      Gycall = function(DAE) {
+                      Gycall = function() {
                           if (length(n) == 0){
                               # do nothing
-                              return(DAE);
                           } else {
                               a <- which((DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
                               b <- which(DAE$y[vbus] > data[, 6] & data[, 8] & u);
@@ -145,9 +143,8 @@ PQ <- setRefClass("PQ", contains = "powerr",
                                       powerDenseMatrix(k, k, 2 * data[, 5] * DAE$y[k] / data[, 6] / 
                                                            data[, 6], c(DAE$m, DAE$m));
                               }
-                              
-                              return(DAE);
                           }
+                          assign("DAE", DAE, envir = .GlobalEnv);
                       }
                       
                   ))

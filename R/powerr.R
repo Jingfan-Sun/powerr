@@ -4,6 +4,7 @@
 #' powerInit()
 
 powerInit <- function(){
+    rm(list = ls())
     
     # globle settings
     Settings <<- list(pv2pq = FALSE,
@@ -56,9 +57,9 @@ powerData <- function(data=NULL){
 #' setgy
 #' 
 
-setgy <- function(idx, type = 1, DAE) {
+setgy <- function(idx, type = 1) {
     if (length(idx) == 0) {
-        return(DAE);
+        # do nothing
     } else {
         if (type == 1) {
             DAE$Gy[idx, ] <- 0;
@@ -71,8 +72,8 @@ setgy <- function(idx, type = 1, DAE) {
             DAE$Fy[, idx] <- 0;
             DAE$Gx[idx, ] <- 0;
         }
-        return(DAE);
     }
+    assign("DAE", DAE, envir = .GlobalEnv);
 }
 
 
