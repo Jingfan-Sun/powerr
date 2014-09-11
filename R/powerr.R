@@ -62,18 +62,17 @@ setgy <- function(idx, type = 1) {
         # do nothing
     } else {
         if (type == 1) {
-            DAE$Gy[idx, ] <- 0;
-            DAE$Gy[, idx] <- 0;
-            DAE$Gy <- DAE$Gy + powerDenseMatrix(idx, idx, 1, c(DAE$m, DAE$m));
+            .GlobalEnv$DAE$Gy[idx, ] <- 0;
+            .GlobalEnv$DAE$Gy[, idx] <- 0;
+            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerDenseMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
         } else {
-            DAE$Gy[idx, ] <- 0;
-            DAE$Gy[, idx] <- 0;
-            DAE$Gy <- DAE$Gy + powerDenseMatrix(idx, idx, 1, c(DAE$m, DAE$m));
-            DAE$Fy[, idx] <- 0;
-            DAE$Gx[idx, ] <- 0;
+            .GlobalEnv$DAE$Gy[idx, ] <- 0;
+            .GlobalEnv$DAE$Gy[, idx] <- 0;
+            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerDenseMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+            .GlobalEnv$DAE$Fy[, idx] <- 0;
+            .GlobalEnv$DAE$Gx[idx, ] <- 0;
         }
     }
-    assign("DAE", DAE, envir = .GlobalEnv);
 }
 
 

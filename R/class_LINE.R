@@ -66,21 +66,21 @@ LINE <- setRefClass("LINE", contains = "powerr",
                             if (length(n) == 0){
                                 # do nothing
                             } else {
-                                DAE$g <- rep(0, DAE$m);
+                                .GlobalEnv$DAE$g <- rep(0, .GlobalEnv$DAE$m);
                                 
                                 na <- Bus$a;
                                 nv <- Bus$v;
                                 
-                                DAE$y[nv] <- apply(cbind(DAE$y[nv], rep(1e-6, length(nv))), 1, max);
-                                Vc <- DAE$y[nv] * exp(1i * DAE$y[na]);
+                                .GlobalEnv$DAE$y[nv] <- apply(cbind(.GlobalEnv$DAE$y[nv], rep(1e-6, length(nv))), 1, max);
+                                Vc <- .GlobalEnv$DAE$y[nv] * exp(1i * .GlobalEnv$DAE$y[na]);
                                 S <- Vc * Conj(Y %*% Vc);
                                 p <<- as.numeric(Re(S));
                                 q <<- as.numeric(Im(S));
                                 
-                                DAE$g[na] <- p;
-                                DAE$g[nv] <- q;
+                                .GlobalEnv$DAE$g[na] <- p;
+                                .GlobalEnv$DAE$g[nv] <- q;
                             }
-                            assign("DAE", DAE, envir = .GlobalEnv);
+                            
                         },
                         # build admittance matrix
                         buildAdmittance = function(){
@@ -114,20 +114,20 @@ LINE <- setRefClass("LINE", contains = "powerr",
                             }
                         },
                         Gycall = function() {
-                            assign("DAE", DAE, envir = .GlobalEnv);
+                            
                             build_gy();
-                            assign("DAE", DAE, envir = .GlobalEnv);
+                            
                         },
                         build_gy = function() {
-                            DAE$Gy <- 1e-6 * diag(1,DAE$m, DAE$m);
+                            .GlobalEnv$DAE$Gy <- 1e-6 * diag(1,.GlobalEnv$DAE$m, .GlobalEnv$DAE$m);
                             nb <- Bus$n;
                             
                             if (length(n) == 0){
                                 # do nothing
                             } else {
                                 n1 <- Bus$a;
-                                U <- exp(1i * DAE$y[n1]);
-                                V <- DAE$y[Bus$v] * U;
+                                U <- exp(1i * .GlobalEnv$DAE$y[n1]);
+                                V <- .GlobalEnv$DAE$y[Bus$v] * U;
                                 I <- Y %*% V;
                                 
                                 diagVc <- powerDenseMatrix(n1, n1, V, c(nb, nb));
@@ -141,8 +141,8 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 k <- which(a != 0, arr.ind=T)[, 2];
                                 s <- as.vector(a[which(a != 0, arr.ind=T)]);
                                 
-                                DAE$Gy <- powerDenseMatrix(h, k, s, c(DAE$m, DAE$m))
+                                .GlobalEnv$DAE$Gy <- powerDenseMatrix(h, k, s, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m))
                             }
-                            assign("DAE", DAE, envir = .GlobalEnv);
+                            
                         }
                     ))

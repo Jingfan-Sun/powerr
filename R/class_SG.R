@@ -57,11 +57,11 @@ SG <- setRefClass("SG", contains = "powerr",
                                # at least one angle must be reference
                                # at least one bus must be the slack
                                
-                               DAE$y[vbus] <- data[, 4];
-                               if (!sum(DAE$y[Bus$a]) & n == 1) {
-                                   DAE$y[Bus$a] <- data[1, 5];
+                               .GlobalEnv$DAE$y[vbus] <- data[, 4];
+                               if (!sum(.GlobalEnv$DAE$y[Bus$a]) & n == 1) {
+                                   .GlobalEnv$DAE$y[Bus$a] <- data[1, 5];
                                } else {
-                                   DAE$y[bus] <- data[, 5];
+                                   .GlobalEnv$DAE$y[bus] <- data[, 5];
                                }
                                
                                # checking the consistency of distributed slack bus
@@ -74,34 +74,34 @@ SG <- setRefClass("SG", contains = "powerr",
                                qmin <<- rep(1, n);
                                store <<- data;
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        gcall = function() {
                            if (length(n) == 0){
                                # do nothing
                            } else {
                                idx <- which(u != 0);
-                               DAE$g[bus[idx]] <- 0;
-                               if (Settings$pv2pq == FALSE) {
-                                   DAE$g[vbus[idx]] <- 0;
+                               .GlobalEnv$DAE$g[bus[idx]] <- 0;
+                               if (.GlobalEnv$Settings$pv2pq == FALSE) {
+                                   .GlobalEnv$DAE$g[vbus[idx]] <- 0;
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        Gycall = function() {
                            if (length(n) == 0){
                                # do nothing
                            } else {
-                               assign("DAE", DAE, envir = .GlobalEnv);
+                               
                                setgy(idx = bus[which(u != 0)]);
                                
-                               if (Settings$pv2pq == TRUE) {
+                               if (.GlobalEnv$Settings$pv2pq == TRUE) {
                                    setgy(idx = vbus[which((!pq & u) != 0)]);
                                } else {
                                    setgy(idx = vbus[which(u != 0)]);
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        Fxcall = function(type = 'all') {
                            if (length(n) == 0){
@@ -112,19 +112,19 @@ SG <- setRefClass("SG", contains = "powerr",
                                if (length(idx) == 0) {
                                    # do nothing
                                } else {
-                                   DAE$Fy[, idx] <- 0;
-                                   DAE$Gx[idx, ] <- 0;
+                                   .GlobalEnv$DAE$Fy[, idx] <- 0;
+                                   .GlobalEnv$DAE$Gx[idx, ] <- 0;
                                }
                                
                                if (type == 'onlyq') {
                                    # do nothing
                                } else {
                                    idx <- bus[which(u != 0)];
-                                   DAE$Fy[, idx] <- 0;
-                                   DAE$Gx[idx, ] <- 0;
+                                   .GlobalEnv$DAE$Fy[, idx] <- 0;
+                                   .GlobalEnv$DAE$Gx[idx, ] <- 0;
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        }
                        
                    ))

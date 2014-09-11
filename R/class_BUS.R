@@ -45,11 +45,11 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            # setup internal bus number for second indexing of bus
                            int[data[, 1]] <<- a;
                            
-                           DAE$m <- 2 * n;
-                           DAE$y <- rep(0, DAE$m);
-                           DAE$g <- rep(0, DAE$m);
-                           #                            DAE$Gy <- Matrix(0, nrow = DAE$m, ncol = DAE$m, sparse = TRUE);
-                           DAE$Gy <- matrix(0, nrow = DAE$m, ncol = DAE$m);
+                           .GlobalEnv$DAE$m <- 2 * n;
+                           .GlobalEnv$DAE$y <- rep(0, .GlobalEnv$DAE$m);
+                           .GlobalEnv$DAE$g <- rep(0, .GlobalEnv$DAE$m);
+                           #                            .GlobalEnv$DAE$Gy <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = .GlobalEnv$DAE$m, sparse = TRUE);
+                           .GlobalEnv$DAE$Gy <- matrix(0, nrow = .GlobalEnv$DAE$m, ncol = .GlobalEnv$DAE$m);
                            
                            if (ncol(data) >= 4){
                                
@@ -60,7 +60,7 @@ BUS <- setRefClass("BUS", contains = "powerr",
                                if (sum(data[, 3] > 1.5) > 0){
                                    warning('some initial guess voltage magnitudes are too high.');
                                }
-                               DAE$y[v] <- data[, 3];
+                               .GlobalEnv$DAE$y[v] <- data[, 3];
                                
                                # check voltage phases
                                if (sum(data[, 4] < -1.5708) > 0){
@@ -69,20 +69,17 @@ BUS <- setRefClass("BUS", contains = "powerr",
                                if (sum(data[, 4] > 1.5708) > 0){
                                    warning('some initial guess voltage phases are too high.');
                                }
-                               DAE$y[a] <- data[, 4];
+                               .GlobalEnv$DAE$y[a] <- data[, 4];
                            }
                            else{
-                               DAE$y[a] <- rep(0, n);
-                               DAE$y[v] <- rep(1, n);
+                               .GlobalEnv$DAE$y[a] <- rep(0, n);
+                               .GlobalEnv$DAE$y[v] <- rep(1, n);
                            }
                            
                            Pl <<- rep(0, n);
                            Ql <<- rep(0, n);
                            Pg <<- rep(0, n);
                            Qg <<- rep(0, n);
-                           
-                           DAE <- assign("DAE", DAE, envir = .GlobalEnv);
-                           
                        },
                        getbus = function(idx){
                            uTemp <- int[round(idx)];
@@ -103,9 +100,9 @@ BUS <- setRefClass("BUS", contains = "powerr",
                            print(parent.env(parent.env(environment())))
                            print(parent.env(parent.env(parent.env(environment()))))
                            print(parent.env(parent.env(parent.env(parent.env(environment())))))
-                           DAE$m <- 1000;
-                           DAE$n <- DAE$m;
-                           print(DAE$n)
+                           .GlobalEnv$DAE$m <- 1000;
+                           .GlobalEnv$DAE$n <- .GlobalEnv$DAE$m;
+                           print(.GlobalEnv$DAE$n)
                        }
                        
                    ))

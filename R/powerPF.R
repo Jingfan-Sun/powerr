@@ -15,14 +15,14 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     # memory allocation for equations and Jacobians
     # no dynamic components
     nodyn <- TRUE;
-    DAE$n <<- 1;
-    DAE$f <<- 0;
-    DAE$x <<- 0;
-    DAE$Fx <<- 1;
-    #     DAE$Fy <<- Matrix(0, nrow = 1, ncol = DAE$m, sparse = TRUE);
-    #     DAE$Gx <<- Matrix(0, nrow = DAE$m, ncol = 1, sparse = TRUE);
-    DAE$Fy <<- matrix(0, nrow = 1, ncol = DAE$m);
-    DAE$Gx <<- matrix(0, nrow = DAE$m, ncol = 1);
+    .GlobalEnv$DAE$n <- 1;
+    .GlobalEnv$DAE$f <- 0;
+    .GlobalEnv$DAE$x <- 0;
+    .GlobalEnv$DAE$Fx <- 1;
+    #     .GlobalEnv$DAE$Fy <- Matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m, sparse = TRUE);
+    #     .GlobalEnv$DAE$Gx <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1, sparse = TRUE);
+    .GlobalEnv$DAE$Fy <- matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m);
+    .GlobalEnv$DAE$Gx <- matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1);
     
     convergence <- 1;
     iteration <- 0;
@@ -41,11 +41,11 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     while ((err_max > tolerance) & (iteration <= iterLimit) & (alfa > 1e-5)){
         if (method == 'newton'){
             
-            assign("DAE", DAE, envir = .GlobalEnv);
+            
             inc <- calcInc(nodyn);
             
-            DAE$x <<- DAE$x + inc[1: DAE$n];
-            DAE$y <<- DAE$y + inc[(1 + DAE$n): (DAE$m + DAE$n)];
+            .GlobalEnv$DAE$x <- .GlobalEnv$DAE$x + inc[1: .GlobalEnv$DAE$n];
+            .GlobalEnv$DAE$y <- .GlobalEnv$DAE$y + inc[(1 + .GlobalEnv$DAE$n): (.GlobalEnv$DAE$m + .GlobalEnv$DAE$n)];
         }
         
         iteration <- iteration + 1;
@@ -81,7 +81,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
 
 calcInc <- function(nodyn){
     
-    DAE$g <<- rep(0, DAE$m);
+    .GlobalEnv$DAE$g <- rep(0, .GlobalEnv$DAE$m);
     
     # single slack bus
     Line$gcall();
@@ -95,19 +95,19 @@ calcInc <- function(nodyn){
     PVgen$Gycall();
     Slack$Gycall();
     
-    DAE$Fx <<- matrix(0, DAE$n, DAE$n);
-    DAE$Fy <<- matrix(0, DAE$n, DAE$m);
-    DAE$Gx <<- matrix(0, DAE$m, DAE$n);
+    .GlobalEnv$DAE$Fx <- matrix(0, .GlobalEnv$DAE$n, .GlobalEnv$DAE$n);
+    .GlobalEnv$DAE$Fy <- matrix(0, .GlobalEnv$DAE$n, .GlobalEnv$DAE$m);
+    .GlobalEnv$DAE$Gx <- matrix(0, .GlobalEnv$DAE$m, .GlobalEnv$DAE$n);
     
     if (nodyn == TRUE) {
-        DAE$Fx <<- 1;
+        .GlobalEnv$DAE$Fx <- 1;
     }
     
     Slack$Fxcall(type = 'full');
     PVgen$Fxcall();
     
-    inc <- solve(-rbind(cbind(DAE$Fx, DAE$Fy), cbind(DAE$Gx, DAE$Gy)),
-                 rbind(DAE$f, DAE$g));
+    inc <- solve(-rbind(cbind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cbind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
+                 rbind(.GlobalEnv$DAE$f, .GlobalEnv$DAE$g));
     
     return(inc);
 }

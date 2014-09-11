@@ -89,62 +89,62 @@ PQ <- setRefClass("PQ", contains = "powerr",
                           if (length(n) == 0){
                               # do nothing
                           } else {
-                              DAE$g[bus] <- u * data[, 4] + DAE$g[bus];
-                              DAE$g[vbus] <- u * data[, 5] + DAE$g[vbus];
+                              .GlobalEnv$DAE$g[bus] <- u * data[, 4] + .GlobalEnv$DAE$g[bus];
+                              .GlobalEnv$DAE$g[vbus] <- u * data[, 5] + .GlobalEnv$DAE$g[vbus];
                               
-                              a <- which((DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
-                              b <- which(DAE$y[vbus] > data[, 6] & data[, 8] & u);
+                              a <- which((.GlobalEnv$DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
+                              b <- which(.GlobalEnv$DAE$y[vbus] > data[, 6] & data[, 8] & u);
                               
                               if (length(a) != 0) {
                                   k <- bus[a];
                                   h <- vbus[a];
-                                  DAE$g[k] <- data[a, 4] * DAE$y[h] * DAE$y[h] / data[a, 7] / data[a, 7] +
-                                      DAE$g[k] - data[a, 4];
-                                  DAE$g[h] <- data[a, 5] * DAE$y[h] * DAE$y[h] / data[a, 7] / data[a, 7] +
-                                      DAE$g[h] - data[a, 5];
+                                  .GlobalEnv$DAE$g[k] <- data[a, 4] * .GlobalEnv$DAE$y[h] * .GlobalEnv$DAE$y[h] / data[a, 7] / data[a, 7] +
+                                      .GlobalEnv$DAE$g[k] - data[a, 4];
+                                  .GlobalEnv$DAE$g[h] <- data[a, 5] * .GlobalEnv$DAE$y[h] * .GlobalEnv$DAE$y[h] / data[a, 7] / data[a, 7] +
+                                      .GlobalEnv$DAE$g[h] - data[a, 5];
                               }
                               
                               if (length(b) != 0) {
                                   k <- bus[b];
                                   h <- vbus[b];
-                                  DAE$g[k] <- data[b, 4] * DAE$y[h] * DAE$y[h] / data[b, 7] / data[b, 7] +
-                                      DAE$g[k] - data[b, 4];
-                                  DAE$g[h] <- data[b, 5] * DAE$y[h] * DAE$y[h] / data[b, 7] / data[b, 7] +
-                                      DAE$g[h] - data[b, 5];
+                                  .GlobalEnv$DAE$g[k] <- data[b, 4] * .GlobalEnv$DAE$y[h] * .GlobalEnv$DAE$y[h] / data[b, 7] / data[b, 7] +
+                                      .GlobalEnv$DAE$g[k] - data[b, 4];
+                                  .GlobalEnv$DAE$g[h] <- data[b, 5] * .GlobalEnv$DAE$y[h] * .GlobalEnv$DAE$y[h] / data[b, 7] / data[b, 7] +
+                                      .GlobalEnv$DAE$g[h] - data[b, 5];
                               }
                           }
-                          assign("DAE", DAE, envir = .GlobalEnv);
+                          
                       },
                       Gycall = function() {
                           if (length(n) == 0){
                               # do nothing
                           } else {
-                              a <- which((DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
-                              b <- which(DAE$y[vbus] > data[, 6] & data[, 8] & u);
+                              a <- which((.GlobalEnv$DAE$y[vbus] < data[, 7] & data[, 8] & u) | shunt);
+                              b <- which(.GlobalEnv$DAE$y[vbus] > data[, 6] & data[, 8] & u);
                               
                               if (length(a) != 0) {
                                   k <- bus[a];
                                   h <- vbus[a];
-                                  DAE$Gy <- DAE$Gy + 
-                                      powerDenseMatrix(h, k, 2 * data[, 4] * DAE$y[k] / data[, 7] / 
-                                                           data[, 7], c(DAE$m, DAE$m));
-                                  DAE$Gy <- DAE$Gy + 
-                                      powerDenseMatrix(k, k, 2 * data[, 5] * DAE$y[k] / data[, 7] / 
-                                                           data[, 7], c(DAE$m, DAE$m));
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                      powerDenseMatrix(h, k, 2 * data[, 4] * .GlobalEnv$DAE$y[k] / data[, 7] / 
+                                                           data[, 7], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                      powerDenseMatrix(k, k, 2 * data[, 5] * .GlobalEnv$DAE$y[k] / data[, 7] / 
+                                                           data[, 7], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                               }
                               
                               if (length(b) != 0) {
                                   k <- bus[b];
                                   h <- vbus[b];
-                                  DAE$Gy <- DAE$Gy + 
-                                      powerDenseMatrix(h, k, 2 * data[, 4] * DAE$y[k] / data[, 6] / 
-                                                           data[, 6], c(DAE$m, DAE$m));
-                                  DAE$Gy <- DAE$Gy + 
-                                      powerDenseMatrix(k, k, 2 * data[, 5] * DAE$y[k] / data[, 6] / 
-                                                           data[, 6], c(DAE$m, DAE$m));
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                      powerDenseMatrix(h, k, 2 * data[, 4] * .GlobalEnv$DAE$y[k] / data[, 6] / 
+                                                           data[, 6], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                      powerDenseMatrix(k, k, 2 * data[, 5] * .GlobalEnv$DAE$y[k] / data[, 6] / 
+                                                           data[, 6], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                               }
                           }
-                          assign("DAE", DAE, envir = .GlobalEnv);
+                          
                       }
                       
                   ))

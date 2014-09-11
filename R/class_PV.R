@@ -38,7 +38,7 @@ PV <- setRefClass("PV", contains = "powerr",
                                }
                                vbus <<- bus + Bus$n;
                                n <<- length(data[, 1]);
-                               DAE$y[vbus] <- data[, 5];
+                               .GlobalEnv$DAE$y[vbus] <- data[, 5];
                                
                                if (length(data[1, ]) == 9){
                                    data <<- cBind(data, matrix(1, nrow = n, ncol = 2));
@@ -59,33 +59,33 @@ PV <- setRefClass("PV", contains = "powerr",
                                store <<- data;
                            }
                            
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        gcall = function() {
                            if (length(n) == 0){
                                # do nothing
                            } else {
-                               K <- u * (1 + DAE$kg * data[, 10]);
-                               DAE$g[bus] <- DAE$g[bus] - K * data[, 4];
+                               K <- u * (1 + .GlobalEnv$DAE$kg * data[, 10]);
+                               .GlobalEnv$DAE$g[bus] <- .GlobalEnv$DAE$g[bus] - K * data[, 4];
                                
-                               if (Settings$pv2pq == FALSE) {
-                                   DAE$g[vbus[which(u != 0)]] <- 0;
+                               if (.GlobalEnv$Settings$pv2pq == FALSE) {
+                                   .GlobalEnv$DAE$g[vbus[which(u != 0)]] <- 0;
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        Gycall = function() {
                            if (length(n) == 0){
                                # do nothing
                            } else {
-                               assign("DAE", DAE, envir = .GlobalEnv);
-                               if (Settings$pv2pq == TRUE) {
+                               
+                               if (.GlobalEnv$Settings$pv2pq == TRUE) {
                                    setgy(idx = vbus[which((!pq & u) != 0)]);
                                } else {
                                    setgy(idx = vbus[which(u != 0)]);
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        },
                        Fxcall = function() {
                            if (length(n) == 0){
@@ -96,11 +96,11 @@ PV <- setRefClass("PV", contains = "powerr",
                                if (length(idx) == 0) {
                                    # do nothing
                                } else {
-                                   DAE$Fy[, idx] <- 0;
-                                   DAE$Gx[idx, ] <- 0;
+                                   .GlobalEnv$DAE$Fy[, idx] <- 0;
+                                   .GlobalEnv$DAE$Gx[idx, ] <- 0;
                                }
                            }
-                           assign("DAE", DAE, envir = .GlobalEnv);
+                           
                        }
                        
                    ))

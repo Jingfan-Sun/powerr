@@ -42,26 +42,26 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                              if (length(n) == 0){
                                  # do nothing
                              } else {
-                                 V <- DAE$y[vbus];
+                                 V <- .GlobalEnv$DAE$y[vbus];
                                  V2 <- u * V * V;
                                  
-                                 DAE$g <- DAE$g +
-                                     powerDenseMatrix(bus, 1, data[, 5] * V2, c(DAE$m, 1)) -
-                                     powerDenseMatrix(vbus, 1, data[, 6] * V2, c(DAE$m, 1));
+                                 .GlobalEnv$DAE$g <- .GlobalEnv$DAE$g +
+                                     powerDenseMatrix(bus, 1, data[, 5] * V2, c(.GlobalEnv$DAE$m, 1)) -
+                                     powerDenseMatrix(vbus, 1, data[, 6] * V2, c(.GlobalEnv$DAE$m, 1));
                              }
-                             assign("DAE", DAE, envir = .GlobalEnv);
+                             
                          },
                          Gycall = function() {
                              if (length(n) == 0){
                                  # do nothing
                              } else {
-                                 V <- 2 * u * DAE$y[vbus];
+                                 V <- 2 * u * .GlobalEnv$DAE$y[vbus];
                                  
-                                 DAE$Gy <- DAE$Gy + 
-                                     powerDenseMatrix(bus, vbus, data[, 5] * V, c(DAE$m, DAE$m)) - 
-                                     powerDenseMatrix(vbus, vbus, data[, 6] * V, c(DAE$m, DAE$m));
+                                 .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                     powerDenseMatrix(bus, vbus, data[, 5] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m)) - 
+                                     powerDenseMatrix(vbus, vbus, data[, 6] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                              }
-                             assign("DAE", DAE, envir = .GlobalEnv);
+                             
                          }
                          
                      ))
