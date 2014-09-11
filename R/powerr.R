@@ -8,7 +8,8 @@ powerInit <- function(){
     
     # globle settings
     Settings <<- list(pv2pq = FALSE,
-                      show = TRUE)
+                      show = TRUE,
+                      sparse = FALSE);
     
     # Differential Algebraic Equations
     DAE <<- list(x = numeric(), 
