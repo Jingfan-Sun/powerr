@@ -1,2 +1,4 @@
 exportPattern("^[[:alpha:]]+")
+useDynLib(powerr)
+importFrom(Rcpp, sourceCpp, evalCpp)
 import(methods)
