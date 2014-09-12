@@ -21,21 +21,34 @@ typedef Eigen::MappedSparseMatrix<double> MSpMat;
 typedef MSpMat::InnerIterator InIterMat;
 
 // [[Rcpp::export]]
-Rcpp::List powerSparseProduct(const Eigen::MappedSparseMatrix<double>& mRe,
-const Eigen::MappedSparseMatrix<double>& mIm,
-const Eigen::MappedSparseMatrix<double>& mSp) {
-    SpMat A(mRe.rows(), mRe.cols());
+Rcpp::List powerSparseProduct(const Eigen::MappedSparseMatrix<double>& mRe1,
+const Eigen::MappedSparseMatrix<double>& mIm1,
+const Eigen::MappedSparseMatrix<double>& mRe2,
+const Eigen::MappedSparseMatrix<double>& mIm2){
+    SpMat A(mRe1.rows(), mRe1.cols());
+    SpMat B(mRe2.rows(), mRe2.cols());
     
     A.reserve(A.nonZeros() / A.cols());
-    for (int j = 0; j < mRe.cols(); j ++) {
-        for (InIterMat i_(mRe, j); i_; ++i_) {
-            double a = mRe.coeff(i_.index(), j);
-            double b = mIm.coeff(i_.index(), j);
+    for (int j = 0; j < mRe1.cols(); j ++) {
+        for (InIterMat i_(mRe1, j); i_; ++i_) {
+            double a = mRe1.coeff(i_.index(), j);
+            double b = mIm1.coeff(i_.index(), j);
             std::complex<double> value(a, b);
             A.insert(i_.index(), j) = value;
         }
     }
-    SpMat result = A * mSp;
+    B.reserve(B.nonZeros() / B.cols());
+    for (int j = 0; j < mRe2.cols(); j ++) {
+        for (InIterMat i_(mRe2, j); i_; ++i_) {
+            double a = mRe2.coeff(i_.index(), j);
+            double b = mIm2.coeff(i_.index(), j);
+            std::complex<double> value(a, b);
+            B.insert(i_.index(), j) = value;
+        }
+    }
+    A.makeCompressed();
+    B.makeCompressed();
+    SpMat result = A * B;
     return Rcpp::List::create(Rcpp::Named("mRe")=result.real(),
                               Rcpp::Named("mIm")=result.imag());
 }

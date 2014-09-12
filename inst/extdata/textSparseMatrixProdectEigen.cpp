@@ -52,7 +52,7 @@ typedef Eigen::MappedSparseMatrix<double> MSpMat;
 typedef MSpMat::InnerIterator InIterMat;
 
 // [[Rcpp::export]]
-void demo(const MSpMat mRe, const MSpMat mIm, const MSpMat mSp) {
+void demo(const MSpMat mRe1, const MSpMat mIm1, const MSpMat mRe2, const MSpMat mIm2) {
     using Eigen::Map;
 	using Eigen::VectorXcd;
 	using Eigen::VectorXi;
@@ -65,23 +65,31 @@ void demo(const MSpMat mRe, const MSpMat mIm, const MSpMat mSp) {
 //	const Map<VectorXi> col(as<Map<VectorXi> >(columnIndex));
 //	const Map<VectorXcd> data(as<Map<VectorXcd> >(x));
 	
-	SpMat A(mRe.rows(), mRe.cols());
+	SpMat A(mRe1.rows(), mRe1.cols());
+    SpMat B(mRe2.rows(), mRe2.cols());
     
     A.reserve(A.nonZeros() / A.cols());
-    for (int j = 0; j < mRe.cols(); j ++) {
-        for (InIterMat i_(mRe, j); i_; ++i_) {
-            Rcout << " i,j=" << i_.index() << "," << j << " value=" << i_.value() << std::endl;
-            double a = mRe.coeff(i_.index(), j);
-            double b = mIm.coeff(i_.index(), j);
+    for (int j = 0; j < mRe1.cols(); j ++) {
+        for (InIterMat i_(mRe1, j); i_; ++i_) {
+            double a = mRe1.coeff(i_.index(), j);
+            double b = mIm1.coeff(i_.index(), j);
             std::complex<double> value(a, b);
             A.insert(i_.index(), j) = value;
         }
     }
-    SpMat result = A * mSp;
-    Rcout << sizeof(A) << std::endl << std::endl;
-    A.makeCompressed();
-    Rcout << A.isCompressed() << std::endl << std::endl;
-    Rcout << sizeof(A) << std::endl << std::endl;
+    B.reserve(B.nonZeros() / B.cols());
+    for (int j = 0; j < mRe2.cols(); j ++) {
+        for (InIterMat i_(mRe2, j); i_; ++i_) {
+            double a = mRe2.coeff(i_.index(), j);
+            double b = mIm2.coeff(i_.index(), j);
+            std::complex<double> value(a, b);
+            B.insert(i_.index(), j) = value;
+        }
+    }
+    SpMat result = A * B;
+    Rcout << A << std::endl << std::endl;
+    Rcout << B << std::endl << std::endl;
+    Rcout << result.isCompressed() << std::endl << std::endl;
 //    Rcout << result << std::endl;
 //    Rcout << result.real() << std::endl << std::endl;
 	
