@@ -46,8 +46,8 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                                  V2 <- u * V * V;
                                  
                                  .GlobalEnv$DAE$g <- .GlobalEnv$DAE$g +
-                                     powerDenseMatrix(bus, 1, data[, 5] * V2, c(.GlobalEnv$DAE$m, 1)) -
-                                     powerDenseMatrix(vbus, 1, data[, 6] * V2, c(.GlobalEnv$DAE$m, 1));
+                                     powerMatrix(bus, 1, data[, 5] * V2, c(.GlobalEnv$DAE$m, 1)) -
+                                     powerMatrix(vbus, 1, data[, 6] * V2, c(.GlobalEnv$DAE$m, 1));
                              }
                              
                          },
@@ -58,8 +58,8 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                                  V <- 2 * u * .GlobalEnv$DAE$y[vbus];
                                  
                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
-                                     powerDenseMatrix(bus, vbus, data[, 5] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m)) - 
-                                     powerDenseMatrix(vbus, vbus, data[, 6] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+                                     powerMatrix(bus, vbus, data[, 5] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m)) - 
+                                     powerMatrix(vbus, vbus, data[, 6] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                              }
                              
                          }

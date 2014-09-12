@@ -1,7 +1,8 @@
 #' The class LINE 
 #'
 #' @field n total number of lines
-#' @field Y admittance matrix of the network
+#' @field Ys sparse form admittance matrix of the network
+#' @field Y dense form admittance matrix of the network
 #' @field from indexes of buses at which lines begin
 #' @field to indexes of buses at which lines end
 
@@ -100,16 +101,16 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 #                                     sparseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
                                 #                                     sparseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
-                                Y <<- powerDenseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
-                                    powerDenseMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
-                                    powerDenseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
-                                    powerDenseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
+                                Y <<- powerMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
+                                    powerMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
+                                    powerMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
+                                    powerMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
                                 # check for missing connections (0 diagonal elements)
                                 b <- which(diag(Y) == 0);
                                 if (length(b) != 0) {
                                     #                                     Y <<- Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
-                                    Y <<- Y - powerDenseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
+                                    Y <<- Y - powerMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
                                 }
                             }
                         },
@@ -130,9 +131,9 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 V <- .GlobalEnv$DAE$y[Bus$v] * U;
                                 I <- Y %*% V;
                                 
-                                diagVc <- powerDenseMatrix(n1, n1, V, c(nb, nb));
-                                diagVn <- powerDenseMatrix(n1, n1, U, c(nb, nb));
-                                diagIc <- powerDenseMatrix(n1, n1, I, c(nb, nb));
+                                diagVc <- powerMatrix(n1, n1, V, c(nb, nb));
+                                diagVn <- powerMatrix(n1, n1, U, c(nb, nb));
+                                diagIc <- powerMatrix(n1, n1, I, c(nb, nb));
                                 dS <- diagVc %*% Conj(Y %*% diagVn) + Conj(diagIc) %*% diagVn;
                                 dR <- Conj(diagVc) %*% (diagIc - Y %*% diagVc);
                                 
@@ -141,7 +142,7 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 k <- which(a != 0, arr.ind=T)[, 2];
                                 s <- as.vector(a[which(a != 0, arr.ind=T)]);
                                 
-                                .GlobalEnv$DAE$Gy <- powerDenseMatrix(h, k, s, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m))
+                                .GlobalEnv$DAE$Gy <- powerMatrix(h, k, s, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m))
                             }
                             
                         }

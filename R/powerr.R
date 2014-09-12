@@ -65,11 +65,11 @@ setgy <- function(idx, type = 1) {
         if (type == 1) {
             .GlobalEnv$DAE$Gy[idx, ] <- 0;
             .GlobalEnv$DAE$Gy[, idx] <- 0;
-            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerDenseMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
         } else {
             .GlobalEnv$DAE$Gy[idx, ] <- 0;
             .GlobalEnv$DAE$Gy[, idx] <- 0;
-            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerDenseMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
+            .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + powerMatrix(idx, idx, 1, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
             .GlobalEnv$DAE$Fy[, idx] <- 0;
             .GlobalEnv$DAE$Gx[idx, ] <- 0;
         }
