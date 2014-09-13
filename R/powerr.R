@@ -4,7 +4,7 @@
 #' powerInit()
 
 powerInit <- function(){
-    rm(list = ls())
+    rm(list = ls(.GlobalEnv), envir = .GlobalEnv);
     
     # globle settings
     Settings <<- list(pv2pq = FALSE,
@@ -33,16 +33,7 @@ powerInit <- function(){
                  t = -1
                  )
     
-    Bus <<- BUS$new();
-    Line <<- LINE$new();
-    PQload <<- PQ$new();
-    PVgen <<- PV$new();
-    Twt <<- TWT$new();
-    Shunt <<- SHUNT$new();
-    Slack <<- SG$new();
-    Demand <<- DEMAND$new();
-    Supply <<- SUPPLY$new();
-    PQgen <<- PQ$new();
+    powerVarInit();
 }
 
 #' Read and change data format into powerr format if needed
@@ -76,4 +67,20 @@ setgy <- function(idx, type = 1) {
     }
 }
 
+#' initialize ref class variables
+#' used seperately to implement new Settings
+#' 
+
+powerVarInit <- function() {
+    .GlobalEnv$Bus <- BUS$new();
+    .GlobalEnv$Line <- LINE$new();
+    .GlobalEnv$PQload <- PQ$new();
+    .GlobalEnv$PVgen <- PV$new();
+    .GlobalEnv$Twt <- TWT$new();
+    .GlobalEnv$Shunt <- SHUNT$new();
+    .GlobalEnv$Slack <- SG$new();
+    .GlobalEnv$Demand <- DEMAND$new();
+    .GlobalEnv$Supply <- SUPPLY$new();
+    .GlobalEnv$PQgen <- PQ$new();
+}
 

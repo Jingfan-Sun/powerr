@@ -1,14 +1,11 @@
 #' The class LINE 
 #'
 #' @field n total number of lines
-#' @field Ys sparse form admittance matrix of the network
-#' @field Y dense form admittance matrix of the network
 #' @field from indexes of buses at which lines begin
 #' @field to indexes of buses at which lines end
 
 LINE <- setRefClass("LINE", contains = "powerr", 
                     fields = list(n = "numeric",
-                                  Y = "matrix",
                                   fr = "numeric",
                                   to = "numeric",
                                   vfr = "numeric",
@@ -17,9 +14,8 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                   q = "numeric",
                                   nu = "numeric"),
                     methods = list(
-                        initialize = function(data, n, Y, fr, to, vfr, vto, nu){
+                        initialize = function(data, n, fr, to, vfr, vto, nu){
                             n <<- numeric();
-                            Y <<- matrix();
                             fr <<- numeric();
                             to <<- numeric();
                             vfr <<- numeric();
@@ -72,11 +68,11 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 na <- Bus$a;
                                 nv <- Bus$v;
                                 
-                                .GlobalEnv$DAE$y[nv] <- apply(cbind(.GlobalEnv$DAE$y[nv], rep(1e-6, length(nv))), 1, max);
+                                .GlobalEnv$DAE$y[nv] <- apply(cBind(.GlobalEnv$DAE$y[nv], rep(1e-6, length(nv))), 1, max);
                                 Vc <- .GlobalEnv$DAE$y[nv] * exp(1i * .GlobalEnv$DAE$y[na]);
-                                S <- Vc * Conj(Y %*% Vc);
-                                p <<- as.numeric(Re(S));
-                                q <<- as.numeric(Im(S));
+                                S <- Vc %**% powerConj(.GlobalEnv$Y %**% Vc);
+                                p <<- as.numeric(powerRe(S));
+                                q <<- as.numeric(powerIm(S));
                                 
                                 .GlobalEnv$DAE$g[na] <- p;
                                 .GlobalEnv$DAE$g[nv] <- q;
@@ -90,27 +86,27 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 temp <- 0;
                             } else {
                                 nb <- Bus$n;
-                                # process line data and build admittance matrix [Y]
+                                # process line data and build admittance matrix [.GlobalEnv$Y]
                                 chrg <- 0.5 * u * data[, 10];
                                 y <- u / (data[, 8] + 1i * data[, 9]);
                                 ts <- data[, 11] * exp(1i * data[, 12] * pi / 180);
                                 ts2 <- ts * Conj(ts);
                                 
-                                #                                 Y <<- sparseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
+                                #                                 .GlobalEnv$Y <- sparseMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
                                 #                                     sparseMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
                                 #                                     sparseMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
                                 #                                     sparseMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
-                                Y <<- powerMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) + 
-                                    powerMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) + 
-                                    powerMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) + 
+                                .GlobalEnv$Y <- powerMatrix(fr, to, x = (-y * ts), dims = c(nb, nb)) %++% 
+                                    powerMatrix(to, fr, x = (-y * Conj(ts)), dims = c(nb, nb)) %++% 
+                                    powerMatrix(fr, fr, x = (y + 1i * chrg), dims = c(nb, nb)) %++% 
                                     powerMatrix(to, to, x = (y * ts2 + 1i * chrg), dims = c(nb, nb));
                                 
                                 # check for missing connections (0 diagonal elements)
-                                b <- which(diag(Y) == 0);
+                                b <- which(powerDiag(.GlobalEnv$Y) == 0);
                                 if (length(b) != 0) {
-                                    #                                     Y <<- Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
-                                    Y <<- Y - powerMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
+                                    #                                     .GlobalEnv$Y <- .GlobalEnv$Y - sparseMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
+                                    .GlobalEnv$Y <- .GlobalEnv$Y %--% powerMatrix(b, b, x = (1i * 1e-6), dims = c(nb, nb));
                                 }
                             }
                         },
@@ -129,15 +125,15 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 n1 <- Bus$a;
                                 U <- exp(1i * .GlobalEnv$DAE$y[n1]);
                                 V <- .GlobalEnv$DAE$y[Bus$v] * U;
-                                I <- Y %*% V;
+                                I <- .GlobalEnv$Y %**% V;
                                 
                                 diagVc <- powerMatrix(n1, n1, V, c(nb, nb));
                                 diagVn <- powerMatrix(n1, n1, U, c(nb, nb));
                                 diagIc <- powerMatrix(n1, n1, I, c(nb, nb));
-                                dS <- diagVc %*% Conj(Y %*% diagVn) + Conj(diagIc) %*% diagVn;
-                                dR <- Conj(diagVc) %*% (diagIc - Y %*% diagVc);
+                                dS <- (diagVc %**% powerConj(.GlobalEnv$Y %**% diagVn)) %++% (powerConj(diagIc) %**% diagVn);
+                                dR <- powerConj(diagVc) %**% (diagIc %--% (.GlobalEnv$Y %**% diagVc));
                                 
-                                a <- rbind(cbind(Im(dR), Re(dS)), cbind(Re(dR), Im(dS)));
+                                a <- rBind(cBind(powerIm(dR), powerRe(dS)), cBind(powerRe(dR), powerIm(dS)));
                                 h <- which(a != 0, arr.ind=T)[, 1];
                                 k <- which(a != 0, arr.ind=T)[, 2];
                                 s <- as.vector(a[which(a != 0, arr.ind=T)]);
