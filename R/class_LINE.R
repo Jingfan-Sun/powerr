@@ -70,7 +70,7 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 
                                 .GlobalEnv$DAE$y[nv] <- apply(cBind(.GlobalEnv$DAE$y[nv], rep(1e-6, length(nv))), 1, max);
                                 Vc <- .GlobalEnv$DAE$y[nv] * exp(1i * .GlobalEnv$DAE$y[na]);
-                                S <- Vc %**% (powerConj(.GlobalEnv$Y %**% Vc));
+                                S <- Vc %.*% (powerConj(.GlobalEnv$Y %**% Vc));
                                 p <<- as.numeric(powerRe(S));
                                 q <<- as.numeric(powerIm(S));
                                 
@@ -124,7 +124,7 @@ LINE <- setRefClass("LINE", contains = "powerr",
                             } else {
                                 n1 <- Bus$a;
                                 U <- exp(1i * .GlobalEnv$DAE$y[n1]);
-                                V <- .GlobalEnv$DAE$y[Bus$v] * U;
+                                V <- .GlobalEnv$DAE$y[Bus$v] %.*% U;
                                 I <- .GlobalEnv$Y %**% V;
                                 
                                 diagVc <- powerMatrix(n1, n1, V, c(nb, nb));
@@ -134,9 +134,15 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 dR <- powerConj(diagVc) %**% (diagIc %--% (.GlobalEnv$Y %**% diagVc));
                                 
                                 a <- rBind(cBind(powerIm(dR), powerRe(dS)), cBind(powerRe(dR), powerIm(dS)));
-                                h <- which(a != 0, arr.ind=T)[, 1];
-                                k <- which(a != 0, arr.ind=T)[, 2];
-                                s <- as.vector(a[which(a != 0, arr.ind=T)]);
+                                if (.GlobalEnv$Settings$sparse == TRUE) {
+                                    TmpX <- as(a, "dgTMatrix");
+                                    h <- TmpX@i + 1;
+                                    k <- TmpX@j + 1;
+                                } else {
+                                    h <- which(a != 0, arr.ind=T)[, 1];
+                                    k <- which(a != 0, arr.ind=T)[, 2];
+                                }
+                                s <- as.vector(a[cBind(h, k)]);
                                 
                                 .GlobalEnv$DAE$Gy <- powerMatrix(h, k, s, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m))
                             }

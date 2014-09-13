@@ -106,8 +106,8 @@ calcInc <- function(nodyn){
     Slack$Fxcall(type = 'full');
     PVgen$Fxcall();
     
-    inc <- solve(-rbind(cbind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cbind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
-                 rbind(.GlobalEnv$DAE$f, .GlobalEnv$DAE$g));
+    inc <- Matrix::solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
+                 rBind(.GlobalEnv$DAE$f, .GlobalEnv$DAE$g));
     
     return(inc);
 }

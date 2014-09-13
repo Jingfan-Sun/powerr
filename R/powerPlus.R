@@ -5,18 +5,18 @@
     if (.GlobalEnv$Settings$sparse == TRUE) {
         if ((class(x) != 'list') && (class(x) != 'dgCMatrix')) {
             if ((nnzero(Im(x)) != 0)) {
-                x <- list(mRe = as(Re(x), 'dgCMatrix'),
-                          mIm = as(Im(x), 'dgCMatrix')); 
+                x <- list(mRe = as(as(powerRe(x), 'matrix'), 'dgCMatrix'),
+                          mIm = as(as(powerIm(x), 'matrix'), 'dgCMatrix')); 
             } else {
-                x <- as(as.matrix(Re(x)), 'dgCMatrix');
+                x <- as(as.matrix(powerRe(x)), 'dgCMatrix');
             }
         }
         if ((class(y) != 'list') && (class(y) != 'dgCMatrix')) {
             if ((nnzero(Im(y)) != 0)) {
-                y <- list(mRe = as(Re(y), 'dgCMatrix'),
-                          mIm = as(Im(y), 'dgCMatrix')); 
+                y <- list(mRe = as(as(powerRe(y), 'matrix'), 'dgCMatrix'),
+                          mIm = as(as(powerIm(y), 'matrix'), 'dgCMatrix'));  
             } else {
-                y <- as(as.matrix(Re(y)), 'dgCMatrix');
+                y <- as(as.matrix(powerRe(y)), 'dgCMatrix');
             }
         }
         # if they are both sparse matrix of only real number

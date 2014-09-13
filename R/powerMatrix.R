@@ -17,8 +17,8 @@ powerMatrix <- function(rowIndex, columnIndex, x, dims, useSparse = .GlobalEnv$S
             )
         } else {
             temp <- list(
-                mRe = sparseMatrix(rowIndex, columnIndex, x = Re(x), dims = dims),
-                mIm = sparseMatrix(rowIndex, columnIndex, x = Im(x), dims = dims)
+                mRe = sparseMatrix(rowIndex, columnIndex, x = as.vector(powerRe(x)), dims = dims),
+                mIm = sparseMatrix(rowIndex, columnIndex, x = as.vector(powerIm(x)), dims = dims)
             )
         }
     } else {
