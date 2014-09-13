@@ -57,7 +57,7 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                              } else {
                                  V <- 2 * u * .GlobalEnv$DAE$y[vbus];
                                  
-                                 .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                 .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy %++% 
                                      powerMatrix(bus, vbus, data[, 5] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m)) - 
                                      powerMatrix(vbus, vbus, data[, 6] * V, c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                              }

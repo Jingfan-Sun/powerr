@@ -2,6 +2,11 @@
 #' 
 
 powerMatrix <- function(rowIndex, columnIndex, x, dims, useSparse = .GlobalEnv$Settings$sparse) {
+    if ((length(rowIndex) == 1) && (length(columnIndex) > 1)) {
+        rowIndex <- rep(rowIndex, length(columnIndex));
+    } else if ((length(rowIndex) > 1) && (length(columnIndex) == 1)) {
+        columnIndex <- rep(columnIndex, length(rowIndex));
+    }
     if (useSparse) {
         if (class(x) == 'numeric') {
             temp <- sparseMatrix(rowIndex, columnIndex, x = x, dims = dims);

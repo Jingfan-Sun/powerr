@@ -70,7 +70,7 @@ LINE <- setRefClass("LINE", contains = "powerr",
                                 
                                 .GlobalEnv$DAE$y[nv] <- apply(cBind(.GlobalEnv$DAE$y[nv], rep(1e-6, length(nv))), 1, max);
                                 Vc <- .GlobalEnv$DAE$y[nv] * exp(1i * .GlobalEnv$DAE$y[na]);
-                                S <- Vc %**% powerConj(.GlobalEnv$Y %**% Vc);
+                                S <- Vc %**% (powerConj(.GlobalEnv$Y %**% Vc));
                                 p <<- as.numeric(powerRe(S));
                                 q <<- as.numeric(powerIm(S));
                                 

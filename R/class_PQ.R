@@ -125,10 +125,10 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               if (length(a) != 0) {
                                   k <- bus[a];
                                   h <- vbus[a];
-                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy %++%
                                       powerMatrix(h, k, 2 * data[, 4] * .GlobalEnv$DAE$y[k] / data[, 7] / 
                                                            data[, 7], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
-                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy %++% 
                                       powerMatrix(k, k, 2 * data[, 5] * .GlobalEnv$DAE$y[k] / data[, 7] / 
                                                            data[, 7], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                               }
@@ -136,10 +136,10 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               if (length(b) != 0) {
                                   k <- bus[b];
                                   h <- vbus[b];
-                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy %++% 
                                       powerMatrix(h, k, 2 * data[, 4] * .GlobalEnv$DAE$y[k] / data[, 6] / 
                                                            data[, 6], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
-                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy + 
+                                  .GlobalEnv$DAE$Gy <- .GlobalEnv$DAE$Gy %++% 
                                       powerMatrix(k, k, 2 * data[, 5] * .GlobalEnv$DAE$y[k] / data[, 6] / 
                                                            data[, 6], c(.GlobalEnv$DAE$m, .GlobalEnv$DAE$m));
                               }

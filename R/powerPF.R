@@ -19,10 +19,10 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     .GlobalEnv$DAE$f <- 0;
     .GlobalEnv$DAE$x <- 0;
     .GlobalEnv$DAE$Fx <- 1;
-    #     .GlobalEnv$DAE$Fy <- Matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m, sparse = TRUE);
-    #     .GlobalEnv$DAE$Gx <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1, sparse = TRUE);
-    .GlobalEnv$DAE$Fy <- matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m);
-    .GlobalEnv$DAE$Gx <- matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1);
+    .GlobalEnv$DAE$Fy <- Matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m, sparse = TRUE);
+    .GlobalEnv$DAE$Gx <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1, sparse = TRUE);
+    #     .GlobalEnv$DAE$Fy <- powerMatrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m);
+    #     .GlobalEnv$DAE$Gx <- powerMatrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1);
     
     convergence <- 1;
     iteration <- 0;
