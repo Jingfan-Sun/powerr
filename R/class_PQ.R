@@ -53,7 +53,10 @@ PQ <- setRefClass("PQ", contains = "powerr",
                               } else if (length(data[1, ]) == 8){
                                   data <<- cBind(data, matrix(1, nrow = n, ncol = 1));
                               } else {
-                                  stop('PQ data format is not consistent');
+                                  data[, 6] <<- 1.2;
+                                  data[, 7] <<- 0.8;
+                                  data[, 8] <<- 0;
+                                  cat('Error: PQ data format is not consistent.\n');
                               }
                               
                               if (length(data[1, ]) < ncol){

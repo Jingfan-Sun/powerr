@@ -39,7 +39,7 @@ powerInit <- function(){
 #' Read and change data format into powerr format if needed
 #' 
 
-powerData <- function(data=NULL){
+powerData <- function(data = 'd_003.R'){
     # check file exist
     
     # read data

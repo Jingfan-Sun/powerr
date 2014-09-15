@@ -15,7 +15,7 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                          initialize = function(data, bus, vbus, n, g, b){
                              bus <<- numeric();
                              vbus <<- numeric();
-                             n <<- 0;
+                             n <<- numeric();
                              g <<- numeric();
                              b <<- numeric();
                              ncol <<- 7;
