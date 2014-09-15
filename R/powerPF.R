@@ -107,7 +107,7 @@ calcInc <- function(nodyn){
     PVgen$Fxcall();
     
     inc <- Matrix::solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
-                 rBind(.GlobalEnv$DAE$f, .GlobalEnv$DAE$g));
+                 rBind(.GlobalEnv$DAE$f, as.matrix(.GlobalEnv$DAE$g)));
     
     return(inc);
 }
