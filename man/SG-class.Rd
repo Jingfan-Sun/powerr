@@ -3,9 +3,9 @@
 \name{SG-class}
 \alias{SG}
 \alias{SG-class}
-\title{The class SG}
+\title{SG}
 \description{
-The class SG
+The class SG (Slack Generator)
 }
 \section{Fields}{
 

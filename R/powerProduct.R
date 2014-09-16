@@ -1,4 +1,29 @@
-#' %**% binary operator which calculate production of sparse matrix including complex numbers
+#' Binary operator \%**\%
+#' 
+#' Binary operator which calculate matrix production of sparse matrix including complex numbers
+#' When is not in sparse mode (Settings$sparse == FALSE), '\%**\%' is same as '\%*\%'
+#' WHen in sparse mode, '\%**\%'support complex sparse matrix created by powerMatrix
+#' 
+#' @param x,y parameters on the other side of the operator
+#' 
+#' @examples
+#' # in sparse mode
+#' a <- powerMatrix(c(1,2), c(2,3), x = c(1-1i, 4), dims = c(3,3))
+#' b <- powerMatrix(c(2,3), c(1,2), x = c(1-1i, 3+4i), dims = c(3,3))
+#' a %**% b
+#' # $mRe
+#' # 3 x 3 sparse Matrix of class "dgCMatrix"
+#' # 
+#' # [1,] 0  . .
+#' # [2,] . 12 .
+#' # [3,] .  . .
+#' # 
+#' # $mIm
+#' # 3 x 3 sparse Matrix of class "dgCMatrix"
+#' # 
+#' # [1,] -2  . .
+#' # [2,]  . 16 .
+#' # [3,]  .  . .
 
 "%**%" <- function(x, y) {
     if (.GlobalEnv$Settings$sparse == TRUE) {

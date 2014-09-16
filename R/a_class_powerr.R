@@ -1,3 +1,5 @@
+#' top class of package powerr
+#' 
 #' The top class powerr 
 #'
 #' @field data powerr data

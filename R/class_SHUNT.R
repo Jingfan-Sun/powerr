@@ -1,3 +1,5 @@
+#' SHUNT
+#' 
 #' The class SHUNT 
 #'
 #' @field data shunt impedance data.

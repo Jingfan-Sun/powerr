@@ -3,7 +3,7 @@
 \name{powerr-class}
 \alias{powerr}
 \alias{powerr-class}
-\title{The top class powerr}
+\title{top class of package powerr}
 \description{
 The top class powerr
 }

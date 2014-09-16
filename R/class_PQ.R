@@ -1,3 +1,5 @@
+#' PQ
+#' 
 #' The class PQ 
 #'
 #' @field n total number of PQ generators

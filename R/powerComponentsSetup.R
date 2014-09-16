@@ -1,6 +1,9 @@
-#' setup components
+#' powerComponentSetup
 #' 
-#' @param DAE
+#' Setup components in powerr
+#' 
+#' @examples
+#' powerComponentSetup()
 
 powerComponentsSetup <- function(){
     Bus$setup();

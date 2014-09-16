@@ -1,3 +1,5 @@
+#' DEMAND
+#' 
 #' The class DEMAND 
 #'
 #' @field n total number of demand loads

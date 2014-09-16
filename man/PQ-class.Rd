@@ -3,7 +3,7 @@
 \name{PQ-class}
 \alias{PQ}
 \alias{PQ-class}
-\title{The class PQ}
+\title{PQ}
 \description{
 The class PQ
 }

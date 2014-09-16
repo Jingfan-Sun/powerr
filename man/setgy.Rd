@@ -3,9 +3,14 @@
 \alias{setgy}
 \title{setgy}
 \usage{
-setgy(idx, type = 1, DAE)
+setgy(idx, type = 1)
+}
+\arguments{
+\item{idx}{index of gy components}
+
+\item{type}{distinguish different type of gy setup}
 }
 \description{
-setgy
+set gy field in powerr classes
 }
 

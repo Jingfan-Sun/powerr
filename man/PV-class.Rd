@@ -3,7 +3,7 @@
 \name{PV-class}
 \alias{PV}
 \alias{PV-class}
-\title{The class PV}
+\title{PV}
 \description{
 The class PV
 }

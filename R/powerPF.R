@@ -1,8 +1,13 @@
-#' solve standard power flow with Newton–Raphson method
+#' powerPF
 #' 
-#' @param method 'newton' for standard Newton–Raphson method
+#' solve standard power flow with Newton Raphson method
+#' 
+#' @param method "newton" for standard Newton Raphson method
 #' @param tolerance set minimum accuracy for the power flow run
 #' @param iterLimit set maximum iteration for each run 
+#' 
+#' @examples
+#' powerPF()
 
 powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     
@@ -35,7 +40,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     timeStart <- proc.time();
     
     if (method == 'newton') {
-        cat('Power Flow Solver: Newton–Raphson method \n');
+        cat('Power Flow Solver: Newton Raphson method \n');
     }
     
     while ((err_max > tolerance) & (iteration <= iterLimit) & (alfa > 1e-5)){
@@ -76,8 +81,11 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     
 }
 
+#' calcInc
+#' 
 #' calculate the increase of each iteration in each run
 #' 
+#' @param nodyn is TRUE if there is no dynamic components
 
 calcInc <- function(nodyn){
     

@@ -1,5 +1,8 @@
-#' calculate conj of complex or real sparse matrix
+#' powerConj
 #' 
+#' Calculate conj of complex or real sparse matrix
+#' 
+#' @param x complex objects to calculate conjugate
 
 powerConj <- function(x) {
     if (class(x) == 'list') {

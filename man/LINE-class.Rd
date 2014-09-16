@@ -3,7 +3,7 @@
 \name{LINE-class}
 \alias{LINE}
 \alias{LINE-class}
-\title{The class LINE}
+\title{LINE}
 \description{
 The class LINE
 }
@@ -11,8 +11,6 @@ The class LINE
 
 \describe{
 \item{\code{n}}{total number of lines}
-
-\item{\code{Y}}{admittance matrix of the network}
 
 \item{\code{from}}{indexes of buses at which lines begin}
 

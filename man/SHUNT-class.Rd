@@ -3,7 +3,7 @@
 \name{SHUNT-class}
 \alias{SHUNT}
 \alias{SHUNT-class}
-\title{The class SHUNT}
+\title{SHUNT}
 \description{
 The class SHUNT
 }

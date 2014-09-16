@@ -1,4 +1,6 @@
-#' The class SG 
+#' SG
+#' 
+#' The class SG (Slack Generator)
 #'
 #' @field n total number of slack generators
 #' @field bus indexes of buses to which slack generators are connected

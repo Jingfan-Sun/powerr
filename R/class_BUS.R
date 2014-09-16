@@ -1,3 +1,5 @@
+#' BUS
+#' 
 #' The class BUS 
 #'
 #' @field n total number of buses

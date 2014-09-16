@@ -1,3 +1,5 @@
+#' PV
+#' 
 #' The class PV 
 #'
 #' @field n total number of PV generators

@@ -3,7 +3,7 @@
 \name{SUPPLY-class}
 \alias{SUPPLY}
 \alias{SUPPLY-class}
-\title{The class SUPPLY}
+\title{SUPPLY}
 \description{
 The class SUPPLY
 }

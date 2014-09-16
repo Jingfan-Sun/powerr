@@ -3,8 +3,8 @@
 \name{TWT-class}
 \alias{TWT}
 \alias{TWT-class}
-\title{The class TWT}
+\title{TWT}
 \description{
-The class TWT
+The class TWT (Two Winds Transformer)
 }
 

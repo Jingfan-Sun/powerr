@@ -1,3 +1,5 @@
+#' powerInit
+#' 
 #' Initialize varables and classes for later analysis
 #' 
 #' @examples
@@ -36,18 +38,32 @@ powerInit <- function(){
     powerVarInit();
 }
 
-#' Read and change data format into powerr format if needed
+#' powerData
+#'
+#' Read formated data into powerr
 #' 
+#' @param data name of data file with '.R' extension
+#' @param path the path of the datafile with no '/' in the end
+#' 
+#' @examples
+#' powerData('d_003.R')
 
-powerData <- function(data = 'd_003.R'){
+powerData <- function(data = 'd_003.R', 
+                      path = paste(path.package('powerr'), '/extdata', sep = '')){
     # check file exist
-    
+    if (!(file.exists(paste(path, '/', data, sep = '')))) {
+        stop('No file found in path provided');
+    }
     # read data
-    source(paste(path.package('powerr'), '/extdata/', data, sep = ''))
+    source(paste(path, '/', data, sep = ''))
 }
 
 #' setgy
 #' 
+#' set gy field in powerr classes
+#' 
+#' @param idx index of gy components
+#' @param type distinguish different type of gy setup
 
 setgy <- function(idx, type = 1) {
     if (length(idx) == 0) {
@@ -67,9 +83,13 @@ setgy <- function(idx, type = 1) {
     }
 }
 
+#' powerVarInit
+#' 
 #' initialize ref class variables
 #' used seperately to implement new Settings
 #' 
+#' @examples
+#' powerVarInit()
 
 powerVarInit <- function() {
     .GlobalEnv$Bus <- BUS$new();

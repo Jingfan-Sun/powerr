@@ -1,3 +1,5 @@
+#' SUPPLY
+#' 
 #' The class SUPPLY 
 #'
 #' @field n total number of supply

@@ -3,7 +3,7 @@
 \name{BUS-class}
 \alias{BUS}
 \alias{BUS-class}
-\title{The class BUS}
+\title{BUS}
 \description{
 The class BUS
 }

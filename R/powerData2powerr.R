@@ -1,5 +1,13 @@
+#' powerData2powerr
+#' 
 #' change data file to powerr .R file format
 #' 
+#' @param dataName name of data file to be changed format
+#' @param dataPath path of the file with no '/' in the end
+#' @param fromMode the former data format
+#' 
+#' @examples
+#' powerData2powerr()
 
 powerData2powerr <- function(dataName = 'd_006_mdl.m', 
                              dataPath = paste(path.package('powerr'), '/extdata', sep = ''),

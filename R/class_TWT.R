@@ -1,4 +1,6 @@
-#' The class TWT 
+#' TWT
+#' 
+#' The class TWT (Two Winds Transformer)
 #'
 
 TWT <- setRefClass("TWT", contains = "powerr", 

@@ -3,7 +3,7 @@
 \name{DEMAND-class}
 \alias{DEMAND}
 \alias{DEMAND-class}
-\title{The class DEMAND}
+\title{DEMAND}
 \description{
 The class DEMAND
 }

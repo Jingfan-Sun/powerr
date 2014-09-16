@@ -1,3 +1,5 @@
+#' LINE
+#' 
 #' The class LINE 
 #'
 #' @field n total number of lines
