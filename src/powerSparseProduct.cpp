@@ -20,6 +20,14 @@ typedef Eigen::SparseMatrix<char_type> SpMat; // declares a column-major sparse 
 typedef Eigen::MappedSparseMatrix<double> MSpMat;
 typedef MSpMat::InnerIterator InIterMat;
 
+//' powerSparseProduct
+//' 
+//' use C++ to calculate matrix product between sparse martix including complex numbers
+//' 
+//' @param mRe1 real part of first sparse matrix
+//' @param mIm1 imagine part of first sparse matrix
+//' @param mRe2 real part of second sparse matrix
+//' @param mIm2 imagine part of second sparse matrix
 // [[Rcpp::export]]
 Rcpp::List powerSparseProduct(const Eigen::MappedSparseMatrix<double>& mRe1,
 const Eigen::MappedSparseMatrix<double>& mIm1,
