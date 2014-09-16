@@ -34,7 +34,7 @@ SHUNT <- setRefClass("SHUNT", contains = "powerr",
                                  if (length(data[1, ]) < ncol){
                                      u <<- rep(1, n);
                                  }else {
-                                     u <<- data(, ncol);
+                                     u <<- data[, ncol];
                                  }
                                  
                                  store <<- data;

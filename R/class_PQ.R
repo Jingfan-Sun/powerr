@@ -88,7 +88,6 @@ PQ <- setRefClass("PQ", contains = "powerr",
                           else {
                               # set generated power as negtive loads
                           }
-                          assign('PQgen', PQgen, env = .GlobalEnv);
                       },
                       gcall = function() {
                           if (length(n) == 0){

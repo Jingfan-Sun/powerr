@@ -2,12 +2,10 @@
 #' 
 #' Setup components in powerr
 #' 
-#' @examples
-#' powerComponentSetup()
 
 powerComponentsSetup <- function(){
     
-#     Bus = Line = Shunt = PVgen = Slack = PQload = PQgen = Supply = NULL;
+    Bus = Line = Shunt = PVgen = Slack = PQload = PQgen = Supply = NULL;
     
     .GlobalEnv$Bus$setup();
     .GlobalEnv$Line$setup();

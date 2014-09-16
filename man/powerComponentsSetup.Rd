@@ -8,7 +8,4 @@ powerComponentsSetup()
 \description{
 Setup components in powerr
 }
-\examples{
-powerComponentSetup()
-}
 

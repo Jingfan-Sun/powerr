@@ -7,9 +7,13 @@
 #' @param iterLimit set maximum iteration for each run 
 #' 
 #' @examples
+#' \donttest{
 #' powerPF()
+#' }
 
 powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
+    
+    Line = Settings = NULL;
     
     # Setup components
     powerComponentsSetup();
@@ -88,6 +92,8 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
 #' @param nodyn is TRUE if there is no dynamic components
 
 calcInc <- function(nodyn){
+    
+    Line = PQload = Shunt = PVgen = Slack = NULL;
     
     .GlobalEnv$DAE$g <- rep(0, .GlobalEnv$DAE$m);
     

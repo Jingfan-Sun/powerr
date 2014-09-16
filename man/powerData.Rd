@@ -15,6 +15,8 @@ powerData(data = "d_003.R", path = paste(path.package("powerr"), "/extdata",
 Read formated data into powerr
 }
 \examples{
+\donttest{
 powerData('d_003.R')
+}
 }
 

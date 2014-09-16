@@ -16,6 +16,8 @@ powerPF(method = "newton", tolerance = 1e-05, iterLimit = 20)
 solve standard power flow with Newton Raphson method
 }
 \examples{
+\donttest{
 powerPF()
+}
 }
 

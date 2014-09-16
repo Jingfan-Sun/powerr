@@ -7,9 +7,10 @@
 #' @param x,y parameters on the other side of the operator
 #' 
 #' @examples
+#' \donttest{
 #' # in sparse mode
-#' a <- powerMatrix(c(1,2), c(2,3), x = c(1-1i, 4), dims = c(3,3))
-#' b <- powerMatrix(c(2,3), c(1,2), x = c(1-1i, 3+4i), dims = c(3,3))
+#' a <- powerMatrix(c(1,2), c(2,3), x = c(1-1i, 4), dims = c(3,3), useSparse = TRUE)
+#' b <- powerMatrix(c(2,3), c(1,2), x = c(1-1i, 3+4i), dims = c(3,3), useSparse = TRUE)
 #' a %**% b
 #' # $mRe
 #' # 3 x 3 sparse Matrix of class "dgCMatrix"
@@ -24,6 +25,7 @@
 #' # [1,] -2  . .
 #' # [2,]  . 16 .
 #' # [3,]  .  . .
+#' }
 
 "%**%" <- function(x, y) {
     if (.GlobalEnv$Settings$sparse == TRUE) {

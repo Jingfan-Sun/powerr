@@ -8,7 +8,7 @@
 powerInit <- function(){
     rm(list = ls(.GlobalEnv), envir = .GlobalEnv);
     
-#     Settings = DAE = NULL;
+    Settings = DAE = NULL;
     
     # globle settings
     Settings <<- list(pv2pq = FALSE,
@@ -48,7 +48,9 @@ powerInit <- function(){
 #' @param path the path of the datafile with no '/' in the end
 #' 
 #' @examples
+#' \donttest{
 #' powerData('d_003.R')
+#' }
 
 powerData <- function(data = 'd_003.R', 
                       path = paste(path.package('powerr'), '/extdata', sep = '')){
