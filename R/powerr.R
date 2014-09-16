@@ -8,6 +8,8 @@
 powerInit <- function(){
     rm(list = ls(.GlobalEnv), envir = .GlobalEnv);
     
+#     Settings = DAE = NULL;
+    
     # globle settings
     Settings <<- list(pv2pq = FALSE,
                       show = TRUE,

@@ -6,13 +6,16 @@
 #' powerComponentSetup()
 
 powerComponentsSetup <- function(){
-    Bus$setup();
-    Line$setup();
-    Shunt$setup();
-    PVgen$setup();
-    Slack$setup();
-    PQload$setup();
-    PQgen$setup();
-    PQgen$addgen();
-    Supply$setup();
+    
+#     Bus = Line = Shunt = PVgen = Slack = PQload = PQgen = Supply = NULL;
+    
+    .GlobalEnv$Bus$setup();
+    .GlobalEnv$Line$setup();
+    .GlobalEnv$Shunt$setup();
+    .GlobalEnv$PVgen$setup();
+    .GlobalEnv$Slack$setup();
+    .GlobalEnv$PQload$setup();
+    .GlobalEnv$PQgen$setup();
+    .GlobalEnv$PQgen$addgen();
+    .GlobalEnv$Supply$setup();
 }

@@ -18,12 +18,12 @@ powerDenseMatrix <- function(rowIndex, columnIndex, x, dims){
     temp <- matrix(0, nrow, ncol);
     
     index <- apply(cbind(rowIndex, columnIndex), 1, function(y) {
-        y[1] + (y[2] - 1) * nrow
+        y[[1]] + (y[[2]] - 1) * nrow
     })
     
     apply(cbind(index, as.numeric(1:length(x))), 1, function(y) {
-        temp[y[1]] <- temp[y[1]] + x[y[2]];
-        return(temp)
+        temp[y[[1]]] <<- temp[y[[1]]] + x[y[[2]]];
+        return()
     })
 #     temp[index] <- x;
     

@@ -24,8 +24,8 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     .GlobalEnv$DAE$f <- 0;
     .GlobalEnv$DAE$x <- 0;
     .GlobalEnv$DAE$Fx <- 1;
-    .GlobalEnv$DAE$Fy <- Matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m, sparse = TRUE);
-    .GlobalEnv$DAE$Gx <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1, sparse = TRUE);
+    .GlobalEnv$DAE$Fy <- Matrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m, sparse = .GlobalEnv$Settings$sparse);
+    .GlobalEnv$DAE$Gx <- Matrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1, sparse = .GlobalEnv$Settings$sparse);
     #     .GlobalEnv$DAE$Fy <- powerMatrix(0, nrow = 1, ncol = .GlobalEnv$DAE$m);
     #     .GlobalEnv$DAE$Gx <- powerMatrix(0, nrow = .GlobalEnv$DAE$m, ncol = 1);
     
@@ -114,8 +114,13 @@ calcInc <- function(nodyn){
     Slack$Fxcall(type = 'full');
     PVgen$Fxcall();
     
-    inc <- Matrix::solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
-                 rBind(.GlobalEnv$DAE$f, as.matrix(.GlobalEnv$DAE$g)));
+    if (.GlobalEnv$Settings$sparse == TRUE) {
+        inc <- Matrix::solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
+                             rBind(.GlobalEnv$DAE$f, as.matrix(.GlobalEnv$DAE$g)));
+    } else {
+        inc <- solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
+                     rBind(.GlobalEnv$DAE$f, as.matrix(.GlobalEnv$DAE$g)));
+    }
     
     return(inc);
 }

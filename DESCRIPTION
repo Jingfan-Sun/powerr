@@ -15,8 +15,7 @@ Depends:
     R (>= 3.1.0),
     methods,
     tools,
-    Matrix,
-    Rcpp
+    Matrix
 Description: PowerR is used for electric power system analysis and control,
     including power flow analysis.
 License: GPL (>= 2)
