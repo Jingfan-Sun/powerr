@@ -1,6 +1,7 @@
 exportPattern("^[[:alpha:]]+")
 useDynLib(powerr)
 importFrom(Rcpp, sourceCpp, evalCpp)
+import(RcppEigen)
 import(methods)
 import(Matrix)
 export('%**%')
