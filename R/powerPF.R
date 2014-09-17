@@ -19,7 +19,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
     powerComponentsSetup();
     
     # Build Admittance Matrix in Line
-    Line$buildAdmittance();
+    .GlobalEnv$Line$buildAdmittance();
     
     # memory allocation for equations and Jacobians
     # no dynamic components
@@ -61,7 +61,7 @@ powerPF <- function(method = 'newton', tolerance = 1e-5, iterLimit = 20){
         err_max <- max(abs(inc));
         err_vector <- c(err_vector, err_max);
         
-        if (Settings$show == TRUE) {
+        if (.GlobalEnv$Settings$show == TRUE) {
             cat('Iteration:', iteration, ', Maximun Convergency Error:', err_max, '\n');
         }
         
@@ -98,16 +98,16 @@ calcInc <- function(nodyn){
     .GlobalEnv$DAE$g <- rep(0, .GlobalEnv$DAE$m);
     
     # single slack bus
-    Line$gcall();
-    PQload$gcall();
-    Shunt$gcall();
-    PVgen$gcall();
-    Slack$gcall();
-    Line$Gycall();
-    PQload$Gycall();
-    Shunt$Gycall();
-    PVgen$Gycall();
-    Slack$Gycall();
+    .GlobalEnv$Line$gcall();
+    .GlobalEnv$PQload$gcall();
+    .GlobalEnv$Shunt$gcall();
+    .GlobalEnv$PVgen$gcall();
+    .GlobalEnv$Slack$gcall();
+    .GlobalEnv$Line$Gycall();
+    .GlobalEnv$PQload$Gycall();
+    .GlobalEnv$Shunt$Gycall();
+    .GlobalEnv$PVgen$Gycall();
+    .GlobalEnv$Slack$Gycall();
     
     .GlobalEnv$DAE$Fx <- matrix(0, .GlobalEnv$DAE$n, .GlobalEnv$DAE$n);
     .GlobalEnv$DAE$Fy <- matrix(0, .GlobalEnv$DAE$n, .GlobalEnv$DAE$m);
@@ -117,8 +117,8 @@ calcInc <- function(nodyn){
         .GlobalEnv$DAE$Fx <- 1;
     }
     
-    Slack$Fxcall(type = 'full');
-    PVgen$Fxcall();
+    .GlobalEnv$Slack$Fxcall(type = 'full');
+    .GlobalEnv$PVgen$Fxcall();
     
     if (.GlobalEnv$Settings$sparse == TRUE) {
         inc <- Matrix::solve(-rBind(cBind(.GlobalEnv$DAE$Fx, .GlobalEnv$DAE$Fy), cBind(.GlobalEnv$DAE$Gx, .GlobalEnv$DAE$Gy)),
