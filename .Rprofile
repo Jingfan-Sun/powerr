@@ -1,0 +1,1 @@
+options(repos = c(CRAN="http://ftp.ctex.org/mirrors/CRAN/"))
