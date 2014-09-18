@@ -3,6 +3,11 @@
 // we only include RcppEigen.h which pulls Rcpp.h in for us
 #include <RcppEigen.h>
 
+typedef std::complex<double> char_type;
+typedef Eigen::SparseMatrix<char_type> SpMat; // declares a column-major sparse matrix type of double
+typedef Eigen::MappedSparseMatrix<double> MSpMat;
+typedef MSpMat::InnerIterator InIterMat;
+
 // via the depends attribute we tell Rcpp to create hooks for
 // RcppEigen so that the build process will know what to do
 //
@@ -14,12 +19,6 @@
 // via the exports attribute we tell Rcpp to make this function
 // available from R
 //
-
-typedef std::complex<double> char_type;
-typedef Eigen::SparseMatrix<char_type> SpMat; // declares a column-major sparse matrix type of double
-typedef Eigen::MappedSparseMatrix<double> MSpMat;
-typedef MSpMat::InnerIterator InIterMat;
-
 //' powerSparseProduct
 //' 
 //' use C++ to calculate matrix product between sparse martix including complex numbers
